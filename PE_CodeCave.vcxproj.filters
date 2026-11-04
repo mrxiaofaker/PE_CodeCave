@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{e006df27-54c8-4e1b-a2a2-94198ffcfc10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core">
+      <UniqueIdentifier>{924eac42-0ca1-4288-af14-bdb08f48adda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="parser">
+      <UniqueIdentifier>{d22599e9-51bc-43ef-a168-d6f725ea2f31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="analyzer">
+      <UniqueIdentifier>{85039af7-337a-4c09-9f1e-2a9f1633dda2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="detector">
+      <UniqueIdentifier>{f4823e2c-fd7f-4b59-8ace-8e5b8ecd692d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="reporter">
+      <UniqueIdentifier>{0242bdf3-7153-4233-b39b-7ab20855cf72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="untils">
+      <UniqueIdentifier>{c705a8fb-012c-431a-a097-a314b328bb8d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="analyzer\cave_detector.c">
+      <Filter>analyzer</Filter>
+    </ClCompile>
+    <ClCompile Include="core\engine.c">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="untils\file_tils.c">
+      <Filter>untils</Filter>
+    </ClCompile>
+    <ClCompile Include="reporter\report_generator.c">
+      <Filter>reporter</Filter>
+    </ClCompile>
+    <ClCompile Include="reporter\structured_report.c">
+      <Filter>reporter</Filter>
+    </ClCompile>
+    <ClCompile Include="parser\pe_parser.c">
+      <Filter>parser</Filter>
+    </ClCompile>
+    <ClCompile Include="detector\anomaly_detector.c">
+      <Filter>detector</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="analyzer\cave_detector.h">
+      <Filter>analyzer</Filter>
+    </ClInclude>
+    <ClInclude Include="include\common.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\types.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="core\engine.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="detector\anomaly_detector.h">
+      <Filter>detector</Filter>
+    </ClInclude>
+    <ClInclude Include="untils\file_tils.h">
+      <Filter>untils</Filter>
+    </ClInclude>
+    <ClInclude Include="reporter\report_generator.h">
+      <Filter>reporter</Filter>
+    </ClInclude>
+    <ClInclude Include="parser\pe_parser.h">
+      <Filter>parser</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
