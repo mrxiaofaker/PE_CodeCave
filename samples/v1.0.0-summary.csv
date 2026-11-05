@@ -1,0 +1,5 @@
+"category","samples","unique_sha256","mean_risk_score","median_risk_score","mean_caves","median_caves","cap_rate_percent","mean_anomalies","mean_rwx_sections","mean_entropy","high_or_critical_percent"
+"Delta Force installation","339","336","69.29","66","149.22","150","98.23","3.12","0","6.3807","98.23"
+"Windows System32 (x64)","50","50","85.58","87","150","150","100","7.56","0","5.7102","98"
+"Windows SysWOW64 (x86)","50","50","71.16","70","147.42","150","98","2.42","0","6.2719","98"
+"Windows control combined","100","100","78.37","80","148.71","150","99","4.99","0","5.991","98"
