@@ -5,28 +5,28 @@
 
 typedef struct  
 {
-//ÊÇ·ñÊä³öÏêÏ¸ĞÅÏ¢
+//æ˜¯å¦è¾“å‡ºè¯¦ç»†ä¿¡æ¯
 	bool verbose_output;
 
-//ÊÇ·ñÉú³ÉJSON¸ñÊ½±¨¸æ
+//æ˜¯å¦ç”ŸæˆJSONæ ¼å¼æŠ¥å‘Š
 	bool generation_json_report;
 
-//ÊÇ·ñÉú³ÉHTML±¨¸æ
+//æ˜¯å¦ç”ŸæˆHTMLæŠ¥å‘Š
 
     bool generation_html_report;
-//±¨¸æÊä³öÄ¿Â¼Â·¾¶
+//æŠ¥å‘Šè¾“å‡ºç›®å½•è·¯å¾„
 	char output_directory[MAX_PATH];
 
-//ÈÕÖ¾Êä³ö¼¶±ğ
+//æ—¥å¿—è¾“å‡ºçº§åˆ«
 	uint8_t log_level;
 
-//ìØÖµÒì³£¼ì²â·§Öµ
+//ç†µå€¼å¼‚å¸¸æ£€æµ‹é˜€å€¼
 	double entropy_threshold;
 
-//×îĞ¡µÄ´úÂë¶´Ñ¨³ß´ç
+//æœ€å°çš„ä»£ç æ´ç©´å°ºå¯¸
 
 	uint32_t min_cave_size;
-//×î´óµÄ´úÂë¶´Ñ¨³ß´ç
+//æœ€å¤§çš„ä»£ç æ´ç©´å°ºå¯¸
 	uint32_t max_cave_size;
 
 
@@ -35,31 +35,31 @@ typedef struct
 
 
 typedef  struct  
-{//½ÚÃû³Æ
+{//èŠ‚åç§°
 	char name[IMAGE_SIZEOF_SHORT_NAME + 1];
-	//ĞéÄâµØÖ·
+	//è™šæ‹Ÿåœ°å€
 	uint32_t virtual_address;
-	//ĞéÄâ´óĞ¡
+	//è™šæ‹Ÿå¤§å°
 
 	uint32_t virtual_size;
-	//ÎÄ¼şÆ«ÒÆ
+	//æ–‡ä»¶åç§»
 	uint32_t raw_address;
 
-	//ÎÄ¼ş´óĞ¡
+	//æ–‡ä»¶å¤§å°
 	uint32_t raw_size;
 
-	//½ÚµÄÊôĞÔ
+	//èŠ‚çš„å±æ€§
 	uint32_t characteristics;
 
-		//ĞÅÏ¢ìØÖµ
+		//ä¿¡æ¯ç†µå€¼
 
 		double entropy;
 
 
-	//ÊÇ·ñÖ´ĞĞ
+	//æ˜¯å¦æ‰§è¡Œ
 		bool is_executable;
 
-	//ÊÇ·ñĞ´Èë
+	//æ˜¯å¦å†™å…¥
 		bool is_writable;
 
 
@@ -70,29 +70,29 @@ typedef  struct
 
 
 
-//ìØÖµ8.0ÊÇÍêÈ«Ëæ»ú,0.0ÍêÈ«ÓĞĞòµÄÊÇ00É¶µÄ,1.0~3.0µÍìØÖµ³£¼ûµÄ´úÂë¶Î,ÓĞ²¿·ÖÖØ¸´µÄÊı¾İ
-//7.0~8.0¿ÉÄÜÊÇ¼ÓÃÜÓëÑ¹ËõµÄÊı¾İ
+//ç†µå€¼8.0æ˜¯å®Œå…¨éšæœº,0.0å®Œå…¨æœ‰åºçš„æ˜¯00å•¥çš„,1.0~3.0ä½ç†µå€¼å¸¸è§çš„ä»£ç æ®µ,æœ‰éƒ¨åˆ†é‡å¤çš„æ•°æ®
+//7.0~8.0å¯èƒ½æ˜¯åŠ å¯†ä¸å‹ç¼©çš„æ•°æ®
 
 typedef struct 
 {
-	//¶´Ñ¨ÔÚÎÄ¼şÖĞµÄÆ«ÒÆ
+	//æ´ç©´åœ¨æ–‡ä»¶ä¸­çš„åç§»
 	uint32_t offset;
 	uint32_t rva;
 
-	//¶´Ñ¨´óĞ¡
+	//æ´ç©´å¤§å°
 	uint32_t size;
 
-	//ËùÊôPE½ÚµÄË÷Òı
+	//æ‰€å±PEèŠ‚çš„ç´¢å¼•
 
 	uint32_t section_index;
-	//¶´Ñ¨ÀàĞÍ
+	//æ´ç©´ç±»å‹
 	uint32_t cave_type;
 
-	//¿ÉÒÉ³Ì¶ÈÆÀ·Ö
+	//å¯ç–‘ç¨‹åº¦è¯„åˆ†
 	double suspicion_level;
 
 
-	//¶´Ñ¨ÃèÊöĞÅÏ¢
+	//æ´ç©´æè¿°ä¿¡æ¯
 
 
 	char descriptor[256];
@@ -103,24 +103,24 @@ typedef struct
 
 typedef struct  
 {
-	//Òì³£Ä£Ê½Î¨Ò»±êÊ¶·û
+	//å¼‚å¸¸æ¨¡å¼å”¯ä¸€æ ‡è¯†ç¬¦
 	uint32_t pattern_id;
 
-	//Òì³£Ä£Ê½Ãû³Æ
+	//å¼‚å¸¸æ¨¡å¼åç§°
 	char pattern_name[64];
 
-	//ÑÏÖØ³Ì¶ÈµÈ¼¶
+	//ä¸¥é‡ç¨‹åº¦ç­‰çº§
 	uint32_t severity;
 
 
-	//Òì³£Ä£Ê½ÃèÊö
+	//å¼‚å¸¸æ¨¡å¼æè¿°
 
 	char descriptor[256];
 
-    //Òì³£ÎÄ¼şÆ«ÒÆÁ¿
+    //å¼‚å¸¸æ–‡ä»¶åç§»é‡
 	uint32_t detected_offset;
 
-	//Òì³£µÄPE½ÚË÷Òı
+	//å¼‚å¸¸çš„PEèŠ‚ç´¢å¼•
 	uint32_t section_index;
 
 
@@ -130,11 +130,11 @@ typedef struct
 
 typedef struct  
 {
-	//ÎÄ¼şÂ·¾¶
+	//æ–‡ä»¶è·¯å¾„
 
 
 	char filename[MAX_PATH];
-	//ÎÄ¼ş´óĞ¡
+	//æ–‡ä»¶å¤§å°
 	uint32_t file_size;
 
 	//Dos
@@ -158,7 +158,7 @@ typedef struct
 
 	uint64_t image_base;
 
-	//ÎÄ¼şìØÖµ
+	//æ–‡ä»¶ç†µå€¼
 	double overall_entropy;
 
 
@@ -169,33 +169,33 @@ typedef struct
 
 
 typedef struct _analysis_report_t {
-	//Ä¿±êÎÄ¼şÂ·¾¶
+	//ç›®æ ‡æ–‡ä»¶è·¯å¾„
 	char target_file[MAX_PATH];
 
-	//·ÖÎö¿ªÊ¼Ê±¼ä
+	//åˆ†æå¼€å§‹æ—¶é—´
 	
 	time_t analysis_time;
 
 
-	//·¢ÏÖµÄ´úÂë¶´Ñ¨×ÜÊı
+	//å‘ç°çš„ä»£ç æ´ç©´æ€»æ•°
 	uint32_t total_cave_found;
 
-	//¸ß·çÏÕµÄ´úÂë¶´Ñ¨ÊıÁ¿
+	//é«˜é£é™©çš„ä»£ç æ´ç©´æ•°é‡
 	uint32_t hign_risk_cave;
 
-	//¼ì²âµÄÒì³£Ä£Ê½ÊıÁ¿
+	//æ£€æµ‹çš„å¼‚å¸¸æ¨¡å¼æ•°é‡
 	uint32_t anomalies_detected;
 
-	//ÕûÌå·çÏÕÆÀ¹À
+	//æ•´ä½“é£é™©è¯„ä¼°
 	double overall_risk_score;
 
-	//´úÂë¶´Ñ¨ÏêÏ¸ĞÅÏ¢Êı×é(¶´Ñ¨¼ì²âÆ÷¸ºÔğ²éÕÒ)
+	//ä»£ç æ´ç©´è¯¦ç»†ä¿¡æ¯æ•°ç»„(æ´ç©´æ£€æµ‹å™¨è´Ÿè´£æŸ¥æ‰¾)
 	code_cave_t cave[MAX_CAVES_PER_FILE];
 
-	//Òì³£Ä£Ê½ÏêÏ¸ĞÅÏ¢Êı×é(Òì³£¼ì²âÆ÷¸ºÔğÆÀ¹À)
+	//å¼‚å¸¸æ¨¡å¼è¯¦ç»†ä¿¡æ¯æ•°ç»„(å¼‚å¸¸æ£€æµ‹å™¨è´Ÿè´£è¯„ä¼°)
 	anomaly_pattern_t anomalies[MAX_ANMALIES_PER_FILE];
 
-	//PE ÎÄ¼ş½á¹¹·ÖÎö½á¹û
+	//PE æ–‡ä»¶ç»“æ„åˆ†æç»“æœ
 
 	pe_analysis_t pe_info;
 
@@ -208,24 +208,24 @@ typedef struct _analysis_report_t {
 
 typedef struct 
 {
-	//ÒªÉ¨ÃèµÄÄ¿Â¼Â·¾¶
+	//è¦æ‰«æçš„ç›®å½•è·¯å¾„
 
 	char directory[MAX_PATH];
-	//ÒªÆ¥ÅäµÄÎÄ¼şÀ©Õ¹ÃûÊı×é
+	//è¦åŒ¹é…çš„æ–‡ä»¶æ‰©å±•åæ•°ç»„
 	const char** extensions;
 
-	//À©Õ¹ÃûÊıÁ¿
+	//æ‰©å±•åæ•°é‡
 	int extension_count;
-	//ÊÇ·ñµİ¹éÉ¨Ãè×ÓÄ¿Â¼
+	//æ˜¯å¦é€’å½’æ‰«æå­ç›®å½•
 	bool recursive_scan;
 
-	//ÊÇ·ñÎªÃ¿¸öÎÄ¼şÉú³Éµ¥¶À±¨¸æ
+	//æ˜¯å¦ä¸ºæ¯ä¸ªæ–‡ä»¶ç”Ÿæˆå•ç‹¬æŠ¥å‘Š
 	bool generate_individual_report;
 
-	//ÊÇ·ñÉú³ÉÅúÁ¿·ÖÎö»ã×Ü±¨¸æ
+	//æ˜¯å¦ç”Ÿæˆæ‰¹é‡åˆ†ææ±‡æ€»æŠ¥å‘Š
 	bool generate_summary_report;
 
-	//»ã×Ü±¨¸æÎÄ¼şÃû
+	//æ±‡æ€»æŠ¥å‘Šæ–‡ä»¶å
 	char summary_filename[MAX_PATH];
 
 
@@ -234,11 +234,11 @@ typedef struct
 
 typedef struct  
 {
-	//ÎÄ¼şÂ·¾¶Êı×é
+	//æ–‡ä»¶è·¯å¾„æ•°ç»„
 	char** file;
-	//µ±Ç°ÎÄ¼şÊıÁ¿
+	//å½“å‰æ–‡ä»¶æ•°é‡
 	uint32_t count;
-	//Êı×éÈİÁ¿
+	//æ•°ç»„å®¹é‡
 	uint32_t capacity;
 
 
@@ -248,25 +248,25 @@ typedef struct
 
 typedef struct  
 {
-	//¼Æ»®·ÖÎöµÄÎÄ¼ş×ÜÊı
+	//è®¡åˆ’åˆ†æçš„æ–‡ä»¶æ€»æ•°
 	uint32_t total_files;
-	//ÒÑ¾­´¦ÀíµÄÎÄ¼şÊıÁ¿
+	//å·²ç»å¤„ç†çš„æ–‡ä»¶æ•°é‡
 	uint32_t processed_files;
-    //³É¹¦·ÖÎöµÄÎÄ¼şÊıÁ¿
+    //æˆåŠŸåˆ†æçš„æ–‡ä»¶æ•°é‡
 	uint32_t successfuk_analyses;
-	//·ÖÎöÊ§°ÜµÄÎÄ¼şÊıÁ¿
+	//åˆ†æå¤±è´¥çš„æ–‡ä»¶æ•°é‡
 	uint32_t failed_analyses;
-	//·¢ÏÖµÄ´úÂë¶´Ñ¨×ÜÊı
+	//å‘ç°çš„ä»£ç æ´ç©´æ€»æ•°
 	uint32_t total_caves_found;
-	//·¢ÏÖµÄÒì³£Ä£Ê½×ÜÊı
+	//å‘ç°çš„å¼‚å¸¸æ¨¡å¼æ€»æ•°
 	uint32_t total_anomalies_found;
-	//¸ß·çÏÕµÄÎÄ¼şÊıÁ¿
+	//é«˜é£é™©çš„æ–‡ä»¶æ•°é‡
 	uint32_t hign_risk_files;
-	//Æ½¾ù·çÏÕÆÀ·Ö
+	//å¹³å‡é£é™©è¯„åˆ†
 	uint32_t average_risk_score;
-	//ÅúÁ¿·ÖÎö¿ªÊ¼Ê±¼ä
+	//æ‰¹é‡åˆ†æå¼€å§‹æ—¶é—´
 	time_t start_time;
-	//ÅúÁ¿·ÖÎö½áÊøÊ±¼ä
+	//æ‰¹é‡åˆ†æç»“æŸæ—¶é—´
 	time_t end_time;
 
 }batch_statistic_t;

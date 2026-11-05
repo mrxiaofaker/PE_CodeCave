@@ -2,11 +2,11 @@
 #include "anomaly_detector.h"
 
 static bool anomaly_detector_initialize = false;
-static uint32_t next_anomaly_id = 1; //ÓÃÓÚÉú³ÉÎ¨Ò»µÄÒì³£Ä£Ê½ID
+static uint32_t next_anomaly_id = 1; //ç”¨äºç”Ÿæˆå”¯ä¸€çš„å¼‚å¸¸æ¨¡å¼ID
 /*
-@brief ³õÊ¼»¯Òì³£¼ì²âÆ÷
+@brief åˆå§‹åŒ–å¼‚å¸¸æ£€æµ‹å™¨
 
-@return ³õÊ¼»¯½á¹û×´Ì¬Âë
+@return åˆå§‹åŒ–ç»“æœçŠ¶æ€ç 
 
 
 */
@@ -23,7 +23,7 @@ analysis_result_t initialize_anmoaly_detector(VOID)
 	return RESULT_SUCCESS;
 }
 /*
-@brief ÇåÀíÒì³£¼ì²âÆ÷×ÊÔ´
+@brief æ¸…ç†å¼‚å¸¸æ£€æµ‹å™¨èµ„æº
 
 
 
@@ -38,10 +38,10 @@ VOID cleanup_anmoaly_detector(VOID)
 
 /*
 
-@brief  ¸ù¾İÄ£Ê½Ãû³ÆºÍÖÃĞÅ¶È¼ÆËãÒì³£ÑÏÖØĞÔµÈ¼¶
-@param pattern_name Òì³£Ä£Ê½Ãû³Æ
-@param confidence Òì³£Ä£Ê½ÖÃĞÅ¶È
-@return  Òì³£ÑÏÖØĞÔµÈ¼¶
+@brief  æ ¹æ®æ¨¡å¼åç§°å’Œç½®ä¿¡åº¦è®¡ç®—å¼‚å¸¸ä¸¥é‡æ€§ç­‰çº§
+@param pattern_name å¼‚å¸¸æ¨¡å¼åç§°
+@param confidence å¼‚å¸¸æ¨¡å¼ç½®ä¿¡åº¦
+@return  å¼‚å¸¸ä¸¥é‡æ€§ç­‰çº§
 */
 
 uint8_t get_anomaly_severity(const char* pattern_name, double confidence)
@@ -50,24 +50,24 @@ uint8_t get_anomaly_severity(const char* pattern_name, double confidence)
 	{
 		if (confidence<1.0)
 		{
-			//¼«µÍ·§Öµ< 1.0
+			//æä½é˜€å€¼< 1.0
 
 			return ANOMALY_SEVERITY_HIGH;
 
 		}
 		else if (confidence < 3.0) {
-			//1.0<µÍ·§Öµ< 3.0
+			//1.0<ä½é˜€å€¼< 3.0
 
 			return ANOMALY_SEVERITY_MEDIUM;
 		}
 		else if (confidence>7.5)
 		{
-			//¸ß·§Öµ> 7.5
+			//é«˜é˜€å€¼> 7.5
 			return ANOMALY_SEVERITY_HIGH;
 
 		}
 		else {
-			//ÖĞµÈ·§Öµ 3.0~7.5
+			//ä¸­ç­‰é˜€å€¼ 3.0~7.5
 			return ANOMALY_SEVERITY_LOW;
 			
 		}
@@ -81,10 +81,10 @@ uint8_t get_anomaly_severity(const char* pattern_name, double confidence)
 
 /*
 
-@brief  ¸ù¾İÏàÁÚ½ÚÇøìØÖµ±äÁ¿Òì³£
-@param   entropy1 µÚÒ»¸öìØÖµ
-@param   entropy2 µÚ¶ş¸öìØÖµ
-@return  true ìØÖµ±ä»¯Òì³£ false ìØÖµ±ä»¯Õı³£
+@brief  æ ¹æ®ç›¸é‚»èŠ‚åŒºç†µå€¼å˜é‡å¼‚å¸¸
+@param   entropy1 ç¬¬ä¸€ä¸ªç†µå€¼
+@param   entropy2 ç¬¬äºŒä¸ªç†µå€¼
+@return  true ç†µå€¼å˜åŒ–å¼‚å¸¸ false ç†µå€¼å˜åŒ–æ­£å¸¸
 */
 bool is_anomaly_entropy_change(double entropy1, double entropy2)
 {
@@ -97,14 +97,14 @@ bool is_anomaly_entropy_change(double entropy1, double entropy2)
 
 /*
 
-@brief  ¼ì²â´úÂë¶´Ñ¨¾ÛÀàÒì³£Ä£Ê½
-@param pe_info  PEÎÄ¼ş·ÖÎöĞÅÏ¢½á¹¹ÌåÖ¸Õë
-@param caves ´úÂë¶´Ñ¨Ö¸Õë
-@param cave_count ´úÂë¶´Ñ¨ÊıÁ¿
-@param anomalied Êä³öÒì³£Êı×é
-@param anomaly_count Êä³öÒì³£ÊıÁ¿
-@param max_anomalies ×î´óÒì³£Ä£Ê½ÊıÁ¿ÏŞÖÆ
-@return  ½âÎö½á¹û×´Ì¬Âë
+@brief  æ£€æµ‹ä»£ç æ´ç©´èšç±»å¼‚å¸¸æ¨¡å¼
+@param pe_info  PEæ–‡ä»¶åˆ†æä¿¡æ¯ç»“æ„ä½“æŒ‡é’ˆ
+@param caves ä»£ç æ´ç©´æŒ‡é’ˆ
+@param cave_count ä»£ç æ´ç©´æ•°é‡
+@param anomalied è¾“å‡ºå¼‚å¸¸æ•°ç»„
+@param anomaly_count è¾“å‡ºå¼‚å¸¸æ•°é‡
+@param max_anomalies æœ€å¤§å¼‚å¸¸æ¨¡å¼æ•°é‡é™åˆ¶
+@return  è§£æç»“æœçŠ¶æ€ç 
 
 
 
@@ -112,50 +112,50 @@ bool is_anomaly_entropy_change(double entropy1, double entropy2)
 
 */
 analysis_result_t detect_entry_point_cave_cluster_anomalies(const pe_analysis_t* pe_info, const code_cave_t* caves, uint32_t cave_count, anomaly_pattern_t* anomalied, uint32_t* anomaly_count, uint32_t max_anomalies) {
-	//²ÎÊıÑéÖ¤
+	//å‚æ•°éªŒè¯
 	if (!pe_info || !anomalied ) {
 		return RESULT_ERROR_INVALID_PARAMETER;
 	}
-	//³õÊ¼»¯Êä³ö²ÎÊı
+	//åˆå§‹åŒ–è¾“å‡ºå‚æ•°
 	*anomaly_count = 0;
 
-	//´úÂë¶´Ñ¨ÑéÖ¤
+	//ä»£ç æ´ç©´éªŒè¯
 	if (!caves||cave_count==0)
 	{
 		return RESULT_SUCCESS;
 	}
 
-	//¼ÇÂ¼³ÌĞòÈë¿Ú
+	//è®°å½•ç¨‹åºå…¥å£
 	uint32_t entry_point_rva = pe_info->entry_point;
 
-	//±éÀú´úÂë¶´Ñ¨
-	for (size_t i=0;i<cave_count&&*anomaly_count<max_anomalies;i++)
+	//éå†ä»£ç æ´ç©´
+	for (uint32_t i=0;i<cave_count&&*anomaly_count<max_anomalies;i++)
 	{
 		//FOA  ->RVA
-		//RVA=ÎÄ¼şÆ«ÒÆ-ÎÄ¼ş»ùÖ·+ÄÚ´æ»ùÖ·
+		//RVA=æ–‡ä»¶åç§»-æ–‡ä»¶åŸºå€+å†…å­˜åŸºå€
 		uint32_t cave_rva = caves[i].rva;
 
 
-		//¼ÆËã¶´Ñ¨Óë´úÂëÈë¿ÚµãµÄ¾ø¶Ô¾àÀë
+		//è®¡ç®—æ´ç©´ä¸ä»£ç å…¥å£ç‚¹çš„ç»å¯¹è·ç¦»
 
 		uint32_t distance = (cave_rva > entry_point_rva) ? (cave_rva - entry_point_rva) : (entry_point_rva - cave_rva);
-		//ãĞÖµÉè¶¨256  ¶ÌÌø
+		//é˜ˆå€¼è®¾å®š256  çŸ­è·³
 
 		if (distance<256)
 		{
-			//Òì³£Ä£Ê½ĞÅÏ¢ÌáÈ¡
+			//å¼‚å¸¸æ¨¡å¼ä¿¡æ¯æå–
 			anomaly_pattern_t* anomaly = &anomalied[*anomaly_count];
-			//Ìî³äÒì³£Ä£Ê½ĞÅÏ¢
+			//å¡«å……å¼‚å¸¸æ¨¡å¼ä¿¡æ¯
 			anomaly->section_index = caves[i].section_index;
 			anomaly->detected_offset = caves[i].offset;
 			anomaly->pattern_id = next_anomaly_id++;
 			anomaly->severity = ANOMALY_SEVERITY_HIGH;
 
 
-			strcpy(anomaly->pattern_name, "Èë¿Úµã¸½½ü¶´Ñ¨");
+			strcpy(anomaly->pattern_name, "å…¥å£ç‚¹é™„è¿‘æ´ç©´");
 			snprintf(anomaly->descriptor,
 				sizeof(anomaly->descriptor),
-				"ÔÚÈë¿Úµã %d ×Ö½Ú´¦·¢ÏÖ´úÂë¶´Ñ¨"
+				"åœ¨å…¥å£ç‚¹ %d å­—èŠ‚å¤„å‘ç°ä»£ç æ´ç©´"
 				, distance);
 
 			(*anomaly_count)++;
@@ -173,13 +173,13 @@ analysis_result_t detect_entry_point_cave_cluster_anomalies(const pe_analysis_t*
 }
 /*
 
-@brief  ¼ì²â´úÂë¶´Ñ¨¾ÛÀàÒì³£Ä£Ê½
-@param caves ´úÂë¶´Ñ¨Ö¸Õë
-@param cave_count ´úÂë¶´Ñ¨ÊıÁ¿
-@param anomalied Êä³öÒì³£Êı×é
-@param anomaly_count Êä³öÒì³£ÊıÁ¿
-@param max_anomalies ×î´óÒì³£Ä£Ê½ÊıÁ¿ÏŞÖÆ
-@return  ½âÎö½á¹û×´Ì¬Âë
+@brief  æ£€æµ‹ä»£ç æ´ç©´èšç±»å¼‚å¸¸æ¨¡å¼
+@param caves ä»£ç æ´ç©´æŒ‡é’ˆ
+@param cave_count ä»£ç æ´ç©´æ•°é‡
+@param anomalied è¾“å‡ºå¼‚å¸¸æ•°ç»„
+@param anomaly_count è¾“å‡ºå¼‚å¸¸æ•°é‡
+@param max_anomalies æœ€å¤§å¼‚å¸¸æ¨¡å¼æ•°é‡é™åˆ¶
+@return  è§£æç»“æœçŠ¶æ€ç 
 
 
 
@@ -188,41 +188,41 @@ analysis_result_t detect_entry_point_cave_cluster_anomalies(const pe_analysis_t*
 */
 analysis_result_t detect_cave_cluster_anomalies(const code_cave_t* caves, uint32_t cave_count, anomaly_pattern_t* anomalied, uint32_t* anomaly_count, uint32_t max_anomalies)
 {
-	//²ÎÊıĞ£Ñé
+	//å‚æ•°æ ¡éªŒ
 	if (!caves || !anomalied || !anomaly_count) {
 
 		return RESULT_ERROR_INVALID_PARAMETER;
 
 	}
 
-	//³õÊ¼»¯Êä³ö²ÎÊı
+	//åˆå§‹åŒ–è¾“å‡ºå‚æ•°
 	*anomaly_count = 0;
 
-	//¶´Ñ¨ÊıÁ¿¼ì²â
+	//æ´ç©´æ•°é‡æ£€æµ‹
 	if (cave_count<2)
 	{
 		return RESULT_SUCCESS;
 	}
-	//¾ÛÀà·ÖÎöËã·¨
-	uint32_t clusters[MAX_CAVES_PER_FILE] = { 0 }; //´æ´¢Ã¿¸ö¾Û¼¯µÄ¶´Ñ¨´óĞ¡
-	uint32_t cluster_count = 0;                    //¾Û¼¯×ÜÊı
-	const uint32_t cluster_shreshold = 1024;       //¾ÛÀà¾àÀëãĞÖµ
+	//èšç±»åˆ†æç®—æ³•
+	uint32_t clusters[MAX_CAVES_PER_FILE] = { 0 }; //å­˜å‚¨æ¯ä¸ªèšé›†çš„æ´ç©´å¤§å°
+	uint32_t cluster_count = 0;                    //èšé›†æ€»æ•°
+	const uint32_t cluster_shreshold = 1024;       //èšç±»è·ç¦»é˜ˆå€¼
 
-	//Ëã·¨Ë¼Â· Èç¹ûÁ½¸ö¶´Ñ¨µÄÆ«ÒÆÁ¿²îĞ¡ÓÚãĞÖµÇÒÔÚÍ¬Ò»½ÚÖĞ,ÔòÈÏÎªËüÃÇÊôÓÚÍ¬Ò»¸ö¾ÛÀà
+	//ç®—æ³•æ€è·¯ å¦‚æœä¸¤ä¸ªæ´ç©´çš„åç§»é‡å·®å°äºé˜ˆå€¼ä¸”åœ¨åŒä¸€èŠ‚ä¸­,åˆ™è®¤ä¸ºå®ƒä»¬å±äºåŒä¸€ä¸ªèšç±»
 
 
-	for (size_t i = 0; i < cave_count; i++)
+	for (uint32_t i = 0; i < cave_count; i++)
 	{
 		
 		for (size_t j=i+1;j<cave_count;j++)
 	{
-			//¼ÆËãÁ½¸ö¶´Ñ¨µÄ¾ø¶Ô¾àÀë
+			//è®¡ç®—ä¸¤ä¸ªæ´ç©´çš„ç»å¯¹è·ç¦»
 			uint32_t distance = (caves[j].offset > caves[i].offset) ? (caves[j].offset - caves[i].offset) : (caves[i].offset - caves[j].offset);
-			//Ìõ¼ş1 ¾àÀëĞ¡ÓÚãĞÖµ 
-			// Ìõ¼ş2 ¶´Ñ¨ÔÚÍ¬Ò»½ÚÖĞ
+			//æ¡ä»¶1 è·ç¦»å°äºé˜ˆå€¼
+			// æ¡ä»¶2 æ´ç©´åœ¨åŒä¸€èŠ‚ä¸­
 
 			if (distance<cluster_shreshold&&caves[i].section_index==caves[j].section_index)
-			{  //Ôö¼Óµ±Ç°¾ÛÀàµÄ¶´Ñ¨ÊıÁ¿
+			{  //å¢åŠ å½“å‰èšç±»çš„æ´ç©´æ•°é‡
 				clusters[cluster_count]++;
 
 			}
@@ -231,7 +231,7 @@ analysis_result_t detect_cave_cluster_anomalies(const code_cave_t* caves, uint32
 
 
 	}
-		//µ±Ç°¾ÛÀàÓĞ¶´Ñ¨,ÒÆ¶¯µ½ÏÂÒ»¸ö¾ÛÀà
+		//å½“å‰èšç±»æœ‰æ´ç©´,ç§»åŠ¨åˆ°ä¸‹ä¸€ä¸ªèšç±»
 		if (clusters[cluster_count]>0)
 		{
 			cluster_count++;
@@ -242,24 +242,24 @@ analysis_result_t detect_cave_cluster_anomalies(const code_cave_t* caves, uint32
 
 
 	}
-	//¾ÛÀàÒì³£ÅĞ¶Ï
+	//èšç±»å¼‚å¸¸åˆ¤æ–­
 	if (cluster_count>3&&*anomaly_count<max_anomalies)
 	{
 
 		
-		//Òì³£Ä£Ê½ĞÅÏ¢ÌáÈ¡
+		//å¼‚å¸¸æ¨¡å¼ä¿¡æ¯æå–
 		anomaly_pattern_t* anomaly = &anomalied[*anomaly_count];
-		//Ìî³äÒì³£Ä£Ê½ĞÅÏ¢
+		//å¡«å……å¼‚å¸¸æ¨¡å¼ä¿¡æ¯
 		anomaly->section_index = caves[0].section_index;
 		anomaly->detected_offset = caves[0].offset;
 		anomaly->pattern_id = next_anomaly_id++;
 		anomaly->severity = ANOMALY_SEVERITY_HIGH;
 
 
-		strcpy(anomaly->pattern_name, "¶´Ñ¨¾Û¼¯");
+		strcpy(anomaly->pattern_name, "æ´ç©´èšé›†");
 		snprintf(anomaly->descriptor,
 			sizeof(anomaly->descriptor),
-			"¼ì²âµ½ %d ¸ö´úÂë¶´Ñ¨µÄ¿ÉÒÉ¾Û¼¯"
+			"æ£€æµ‹åˆ° %d ä¸ªä»£ç æ´ç©´çš„å¯ç–‘èšé›†"
 			,cluster_count);
 
 		(*anomaly_count)++;
@@ -277,12 +277,12 @@ analysis_result_t detect_cave_cluster_anomalies(const code_cave_t* caves, uint32
 }
 /*
 
-@brief  ìØÖµÒì³£¼ì²âËã·¨
-@param pe_info  PEÎÄ¼ş·ÖÎöĞÅÏ¢½á¹¹ÌåÖ¸Õë
-@param anomalied  Êä³öÒì³£Êı×é
-@param anomaly_count Êä³öÒì³£ÊıÁ¿
-@param max_anomalies  ×î´óÒì³£Ä£Ê½ÊıÁ¿ÏŞÖÆ
-@return  ½âÎö½á¹û×´Ì¬Âë
+@brief  ç†µå€¼å¼‚å¸¸æ£€æµ‹ç®—æ³•
+@param pe_info  PEæ–‡ä»¶åˆ†æä¿¡æ¯ç»“æ„ä½“æŒ‡é’ˆ
+@param anomalied  è¾“å‡ºå¼‚å¸¸æ•°ç»„
+@param anomaly_count è¾“å‡ºå¼‚å¸¸æ•°é‡
+@param max_anomalies  æœ€å¤§å¼‚å¸¸æ¨¡å¼æ•°é‡é™åˆ¶
+@return  è§£æç»“æœçŠ¶æ€ç 
 
 
 
@@ -292,65 +292,65 @@ analysis_result_t detect_cave_cluster_anomalies(const code_cave_t* caves, uint32
 analysis_result_t detect_entropy_anomalies(const pe_analysis_t* pe_info, 
 	anomaly_pattern_t* anomalied, uint32_t* anomaly_count, uint32_t max_anomalies)
 {
-	//²ÎÊıĞ£Ñé
+	//å‚æ•°æ ¡éªŒ
 	if (!pe_info||!anomalied)
 	{
 		return RESULT_ERROR_INVALID_PARAMETER;
 	}
-	//³õÊ¼»¯Êä³ö²ÎÊı
+	//åˆå§‹åŒ–è¾“å‡ºå‚æ•°
 	*anomaly_count = 0;
 
-	//µ¥½ÚìØÖµÒì³£¼ì²â
-	for (size_t i=0;i<pe_info->section_count&&*anomaly_count<max_anomalies;i++)
+	//å•èŠ‚ç†µå€¼å¼‚å¸¸æ£€æµ‹
+	for (uint32_t i=0;i<pe_info->section_count&&*anomaly_count<max_anomalies;i++)
 	{
 
-		//»ñÈ¡µ±Ç°½ÚĞÅÏ¢
+		//è·å–å½“å‰èŠ‚ä¿¡æ¯
 		const section_info_t* section = &pe_info->section[i];
 
 
-		//´úÂë½Ú
+		//ä»£ç èŠ‚
 		if (section->is_executable&&section->entropy< LOW_ENTROPY_THRESHOLD)
 		{
-			//Òì³£Ä£Ê½ĞÅÏ¢ÌáÈ¡
+			//å¼‚å¸¸æ¨¡å¼ä¿¡æ¯æå–
 			anomaly_pattern_t* anomaly = &anomalied[*anomaly_count];
-			//Ìî³äÒì³£Ä£Ê½ĞÅÏ¢
+			//å¡«å……å¼‚å¸¸æ¨¡å¼ä¿¡æ¯
 			anomaly->section_index = i;
 			anomaly->detected_offset = section->raw_address;
 			anomaly->pattern_id = next_anomaly_id++;
 			anomaly->severity = get_anomaly_severity("entropy", section->entropy);
 
 
-			strcpy(anomaly->pattern_name, "´úÂëÒì³£½Ú:µÍìØÖµ¿ÉÖ´ĞĞ½Ú");
+			strcpy(anomaly->pattern_name, "ä»£ç å¼‚å¸¸èŠ‚:ä½ç†µå€¼å¯æ‰§è¡ŒèŠ‚");
 			snprintf(anomaly->descriptor,
 				sizeof(anomaly->descriptor), 
-				"¿ÉÖ´ĞĞ½ÚÃû³Æ: %s,¿ÉÒÉìØÖµ: %.2f"
-				"Õı³£¿ÉÖ´ĞĞ´úÂëìØÖµÓ¦¸ÃÔÚ4.0~7.0Ö®¼ä,µÍÓÚ4.0¿ÉÄÜÊÇÒì³£Ìî³äÊı¾İ"
-				"¿ÉÄÜÔ­ÒòÊÇ process hollowing code cave »ò¶ñÒâÌæ»»"
+				"å¯æ‰§è¡ŒèŠ‚åç§°: %s,å¯ç–‘ç†µå€¼: %.2f"
+				"æ­£å¸¸å¯æ‰§è¡Œä»£ç ç†µå€¼åº”è¯¥åœ¨4.0~7.0ä¹‹é—´,ä½äº4.0å¯èƒ½æ˜¯å¼‚å¸¸å¡«å……æ•°æ®"
+				"å¯èƒ½åŸå› æ˜¯ process hollowing code cave æˆ–æ¶æ„æ›¿æ¢"
 				, section->name, section->entropy);
 
 			(*anomaly_count)++;
 		}
-		//Êı¾İ½Ú
+		//æ•°æ®èŠ‚
 
 		if (section->is_executable&&section->entropy>HIGN_ENTROPY_THRESHOLD){
-			//¼ì²âÊÇ·ñÒç³ö
+			//æ£€æµ‹æ˜¯å¦æº¢å‡º
 			if (*anomaly_count>max_anomalies)break;
 
-			//Òì³£Ä£Ê½ĞÅÏ¢ÌáÈ¡
+			//å¼‚å¸¸æ¨¡å¼ä¿¡æ¯æå–
 			anomaly_pattern_t* anomaly = &anomalied[*anomaly_count];
-			//Ìî³äÒì³£Ä£Ê½ĞÅÏ¢
+			//å¡«å……å¼‚å¸¸æ¨¡å¼ä¿¡æ¯
 			anomaly->section_index = i;
 			anomaly->detected_offset = section->raw_address;
 			anomaly->pattern_id = next_anomaly_id++;
 			anomaly->severity = get_anomaly_severity("entropy", section->entropy);
 
 
-			strcpy(anomaly->pattern_name, "´úÂëÒì³£½Ú:¸ßìØÖµ¿ÉÖ´ĞĞ½Ú");
+			strcpy(anomaly->pattern_name, "ä»£ç å¼‚å¸¸èŠ‚:é«˜ç†µå€¼å¯æ‰§è¡ŒèŠ‚");
 			snprintf(anomaly->descriptor,
 				sizeof(anomaly->descriptor),
-				"Êı¾İ½ÚÃû³Æ: %s,¿ÉÒÉ¸ßìØÖµ: %.2f"
-				"Õı³£¿ÉÖ´ĞĞ´úÂëìØÖµÓ¦¸ÃÔÚ4.0~7.0Ö®¼ä,µÍÓÚ4.0¿ÉÄÜÊÇÒì³£Ìî³äÊı¾İ"
-				"¿ÉÄÜÔ­ÒòÊÇ ¼ÓÃÜÊı¾İ Ñ¹ËõÊı¾İ Òş²ØµÄ¶ñÒâ´úÂë"
+				"æ•°æ®èŠ‚åç§°: %s,å¯ç–‘é«˜ç†µå€¼: %.2f"
+				"æ­£å¸¸å¯æ‰§è¡Œä»£ç ç†µå€¼åº”è¯¥åœ¨4.0~7.0ä¹‹é—´,ä½äº4.0å¯èƒ½æ˜¯å¼‚å¸¸å¡«å……æ•°æ®"
+				"å¯èƒ½åŸå› æ˜¯ åŠ å¯†æ•°æ® å‹ç¼©æ•°æ® éšè—çš„æ¶æ„ä»£ç "
 				, section->name, section->entropy);
 
 			(*anomaly_count)++;
@@ -363,27 +363,27 @@ analysis_result_t detect_entropy_anomalies(const pe_analysis_t* pe_info,
 
 	}
 
-	//ÏàÁÚ½ÚìØÖµ±ä»¯¼ì²â
-	for (size_t i=0;i+1<pe_info->section_count&&*anomaly_count<max_anomalies;i++)
+	//ç›¸é‚»èŠ‚ç†µå€¼å˜åŒ–æ£€æµ‹
+	for (uint32_t i=0;i+1<pe_info->section_count&&*anomaly_count<max_anomalies;i++)
 	{
-		//µ±Ç°½Ú
+		//å½“å‰èŠ‚
 		const section_info_t* current = &pe_info->section[i];
 
-		//ÏÂÒ»¸ö½Ú
+		//ä¸‹ä¸€ä¸ªèŠ‚
 		const section_info_t* next = &pe_info->section[i + 1];
 
 		//
 		if (is_anomaly_entropy_change(current->entropy, next->entropy))
 		{
-			//»ñÈ¡µ±Ç°½ÚĞÅÏ¢
+			//è·å–å½“å‰èŠ‚ä¿¡æ¯
 			const section_info_t* section = &pe_info->section[i];
 
 
 
 
-			//Òì³£Ä£Ê½ĞÅÏ¢ÌáÈ¡
+			//å¼‚å¸¸æ¨¡å¼ä¿¡æ¯æå–
 			anomaly_pattern_t* anomaly = &anomalied[*anomaly_count];
-			//Ìî³äÒì³£Ä£Ê½ĞÅÏ¢
+			//å¡«å……å¼‚å¸¸æ¨¡å¼ä¿¡æ¯
 			anomaly->section_index = i + 1;
 			anomaly->detected_offset = next->raw_address;
 			anomaly->pattern_id = next_anomaly_id++;
@@ -392,12 +392,12 @@ analysis_result_t detect_entropy_anomalies(const pe_analysis_t* pe_info,
 				? (current->entropy - next->entropy)
 				: (next->entropy - current->entropy);
 
-			strcpy(anomaly->pattern_name, "ìØÖµ²»Á¬Ğø");
+			strcpy(anomaly->pattern_name, "ç†µå€¼ä¸è¿ç»­");
 			snprintf(anomaly->descriptor,
 				sizeof(anomaly->descriptor),
-				"½Ú %s Óë½Ú %s Ö®¼äµÄìØÖµ±ä»¯Òì³£: %.2f -> %.2f"
-				"ìØÖµ±ä»¯·ù¶È %.2f"
-				"¿ÉÄÜÔ­ÒòÊÇ½ÚÇø±»´úÂë×¢Èë,Êı¾İ´Û¸Ä ¶ñÒâÆ´½Ó,»òÕß´æÔÚÒş²ØµÄ¼ÓÃÜ/Ñ¹ËõÊı¾İ",
+				"èŠ‚ %s ä¸èŠ‚ %s ä¹‹é—´çš„ç†µå€¼å˜åŒ–å¼‚å¸¸: %.2f -> %.2f"
+				"ç†µå€¼å˜åŒ–å¹…åº¦ %.2f"
+				"å¯èƒ½åŸå› æ˜¯èŠ‚åŒºè¢«ä»£ç æ³¨å…¥,æ•°æ®ç¯¡æ”¹ æ¶æ„æ‹¼æ¥,æˆ–è€…å­˜åœ¨éšè—çš„åŠ å¯†/å‹ç¼©æ•°æ®",
 				current->name, next->name, current->entropy, next->entropy, entropy_diff
 
 			);
@@ -417,12 +417,12 @@ analysis_result_t detect_entropy_anomalies(const pe_analysis_t* pe_info,
 }
 /*
 
-@brief  ¼ì²éPEÎÄ¼ş½Ú½á¹¹Ïà¹ØµÄÒì³£Ä£Ê½,
-@param pe_info  PEÎÄ¼ş·ÖÎöĞÅÏ¢½á¹¹ÌåÖ¸Õë
-@param anomalied  Êä³öÒì³£Êı×é
-@param anomaly_count Êä³öÒì³£ÊıÁ¿
-@param max_anomalies  ×î´óÒì³£Ä£Ê½ÊıÁ¿ÏŞÖÆ
-@return  ½âÎö½á¹û×´Ì¬Âë
+@brief  æ£€æŸ¥PEæ–‡ä»¶èŠ‚ç»“æ„ç›¸å…³çš„å¼‚å¸¸æ¨¡å¼,
+@param pe_info  PEæ–‡ä»¶åˆ†æä¿¡æ¯ç»“æ„ä½“æŒ‡é’ˆ
+@param anomalied  è¾“å‡ºå¼‚å¸¸æ•°ç»„
+@param anomaly_count è¾“å‡ºå¼‚å¸¸æ•°é‡
+@param max_anomalies  æœ€å¤§å¼‚å¸¸æ¨¡å¼æ•°é‡é™åˆ¶
+@return  è§£æç»“æœçŠ¶æ€ç 
 
 
 
@@ -432,63 +432,63 @@ analysis_result_t detect_entropy_anomalies(const pe_analysis_t* pe_info,
 analysis_result_t detect_section_anomalies(const pe_analysis_t* pe_info, 
 	anomaly_pattern_t* anomalied, uint32_t* anomaly_count, uint32_t max_anomalies)
 {
-	//²ÎÊıĞ£Ñé
+	//å‚æ•°æ ¡éªŒ
 	if (!pe_info||!anomalied)
 	{
 		return RESULT_ERROR_INVALID_PARAMETER;
 	}
-	//³õÊ¼»¯Êä³ö²ÎÊı
+	//åˆå§‹åŒ–è¾“å‡ºå‚æ•°
 	*anomaly_count = 0;
 
 
-	//±éÀú½ÚÇø½á¹¹
-	for (size_t i=0;i<pe_info->section_count&&*anomaly_count<max_anomalies;i++)
+	//éå†èŠ‚åŒºç»“æ„
+	for (uint32_t i=0;i<pe_info->section_count&&*anomaly_count<max_anomalies;i++)
 	{
-		//»ñÈ¡µ±Ç°½ÚĞÅÏ¢
+		//è·å–å½“å‰èŠ‚ä¿¡æ¯
 		const section_info_t* section = &pe_info->section[i];
 
-		//¿ÉÒÉÈ¨ÏŞ×éºÏ(²»ÄÜÍ¬Ê±¿ÉĞ´¿ÉÖ´ĞĞ)
+		//å¯ç–‘æƒé™ç»„åˆ(ä¸èƒ½åŒæ—¶å¯å†™å¯æ‰§è¡Œ)
 		if (section->is_executable&&section->is_writable)
 		{
-			//Òì³£Ä£Ê½ĞÅÏ¢ÌáÈ¡
+			//å¼‚å¸¸æ¨¡å¼ä¿¡æ¯æå–
 			anomaly_pattern_t* anomaly = &anomalied[*anomaly_count];
 
-			//Ìî³äÒì³£Ä£Ê½ĞÅÏ¢
+			//å¡«å……å¼‚å¸¸æ¨¡å¼ä¿¡æ¯
 			anomaly->section_index = i;
 			anomaly->detected_offset = section->raw_address;
 			anomaly->pattern_id = next_anomaly_id++;
 			anomaly->severity = ANOMALY_SEVERITY_HIGH;
 
 
-			strcpy(anomaly->pattern_name, "¿ÉÒÉ½Ú±ê¼Ç:¿ÉĞ´¿É`Ö´ĞĞ");
+			strcpy(anomaly->pattern_name, "å¯ç–‘èŠ‚æ ‡è®°:å¯å†™å¯`æ‰§è¡Œ");
 			snprintf(anomaly->descriptor,
 				sizeof(anomaly->descriptor),
-				"½ÚÃû³Æ: %s,¾ßÓĞ¿ÉĞ´¿ÉÖ´ĞĞÈ¨ÏŞ"
+				"èŠ‚åç§°: %s,å…·æœ‰å¯å†™å¯æ‰§è¡Œæƒé™"
 				
 				, section->name);
 
 			(*anomaly_count)++;
 		}
 
-		//´¿ĞéÄâ½Ú(ÄÚ´æÖĞÕ¼¾İÄÚ´æ,µ«ÊÇÎÄ¼şÖĞ²»Õ¼ÈÎºÎ¿Õ¼ä/BSS½Ú)
+		//çº¯è™šæ‹ŸèŠ‚(å†…å­˜ä¸­å æ®å†…å­˜,ä½†æ˜¯æ–‡ä»¶ä¸­ä¸å ä»»ä½•ç©ºé—´/BSSèŠ‚)
 
 		if (section->virtual_size>0&&section->raw_size==0)
 		{
-			//¼ì²âÊÇ·ñÒç³ö
+			//æ£€æµ‹æ˜¯å¦æº¢å‡º
 			if (*anomaly_count > max_anomalies)break;
-			//Òì³£Ä£Ê½ĞÅÏ¢ÌáÈ¡
+			//å¼‚å¸¸æ¨¡å¼ä¿¡æ¯æå–
 			anomaly_pattern_t* anomaly = &anomalied[*anomaly_count];
-			//Ìî³äÒì³£Ä£Ê½ĞÅÏ¢
+			//å¡«å……å¼‚å¸¸æ¨¡å¼ä¿¡æ¯
 			anomaly->section_index = i;
 			anomaly->detected_offset = section->raw_address;
 			anomaly->pattern_id = next_anomaly_id++;
 			anomaly->severity = ANOMALY_SEVERITY_MEDIUM;
 
 
-			strcpy(anomaly->pattern_name, "´¿ĞéÄâ½Ú");
+			strcpy(anomaly->pattern_name, "çº¯è™šæ‹ŸèŠ‚");
 			snprintf(anomaly->descriptor,
 				sizeof(anomaly->descriptor),
-				"½ÚÃû³Æ: %s,½ö´æÔÚĞéÄâÄÚ´æÖĞ(ĞéÄâ´óĞ¡: %d,ÎÄ¼ş´óĞ¡:0)"
+				"èŠ‚åç§°: %s,ä»…å­˜åœ¨è™šæ‹Ÿå†…å­˜ä¸­(è™šæ‹Ÿå¤§å°: %d,æ–‡ä»¶å¤§å°:0)"
 
 				, section->name,section->virtual_size);
 
@@ -497,28 +497,28 @@ analysis_result_t detect_section_anomalies(const pe_analysis_t* pe_info,
 		}
 
 
-		//Òì³£´óĞ¡±ÈÀı)(ĞéÄâ´óĞ¡±ÈÀıÓëÎÄ¼ş´óĞ¡±ÈÀı²î¾à¹ı´óÁË)(>10.0  <0.1)
+		//å¼‚å¸¸å¤§å°æ¯”ä¾‹)(è™šæ‹Ÿå¤§å°æ¯”ä¾‹ä¸æ–‡ä»¶å¤§å°æ¯”ä¾‹å·®è·è¿‡å¤§äº†)(>10.0  <0.1)
 		if (section->raw_size>0&&section->virtual_size>0)
 		{
 			double size_ratio = (double)section->virtual_size / (double)section->raw_size;
 			if (size_ratio>10.0||size_ratio<0.1)
 			{
 
-				//¼ì²âÊÇ·ñÒç³ö
+				//æ£€æµ‹æ˜¯å¦æº¢å‡º
 				if (*anomaly_count > max_anomalies)break;
-				//Òì³£Ä£Ê½ĞÅÏ¢ÌáÈ¡
+				//å¼‚å¸¸æ¨¡å¼ä¿¡æ¯æå–
 				anomaly_pattern_t* anomaly = &anomalied[*anomaly_count];
-				//Ìî³äÒì³£Ä£Ê½ĞÅÏ¢
+				//å¡«å……å¼‚å¸¸æ¨¡å¼ä¿¡æ¯
 				anomaly->section_index = i;
 				anomaly->detected_offset = section->raw_address;
 				anomaly->pattern_id = next_anomaly_id++;
 				anomaly->severity = ANOMALY_SEVERITY_MEDIUM;
 
 
-				strcpy(anomaly->pattern_name, "Òì³£´óĞ¡±ÈÀı");
+				strcpy(anomaly->pattern_name, "å¼‚å¸¸å¤§å°æ¯”ä¾‹");
 				snprintf(anomaly->descriptor,
 					sizeof(anomaly->descriptor),
-					"½ÚÃû³Æ: %s,Òì³£µÄĞéÄâ/Ô­Ê¼´óĞ¡±ÈÀı(%.2f)"
+					"èŠ‚åç§°: %s,å¼‚å¸¸çš„è™šæ‹Ÿ/åŸå§‹å¤§å°æ¯”ä¾‹(%.2f)"
 
 					, section->name, size_ratio);
 
@@ -537,14 +537,14 @@ analysis_result_t detect_section_anomalies(const pe_analysis_t* pe_info,
 
 /*
 
-@brief  ¼ì²âËùÓĞÀàĞÍµÄÒì³£Ä£Ê½
-@param pe_info  PEÎÄ¼ş·ÖÎöĞÅÏ¢½á¹¹ÌåÖ¸Õë
-@param caves  ´úÂë¶´Ñ¨Êı×éÖ¸Õë
-@param cave_count  ´úÂë¶´Ñ¨ÊıÁ¿
-@param anomalied  ´æ´¢¼ì²âµ½µÄÒì³£Ä£Ê½Êı×é
-@param anomaly_count ´æ´¢¼ì²âµ½µÄÒì³£Ä£Ê½ÊıÁ¿µÄÖ¸Õë
-@param max_anomalies  ×î´óÒì³£Ä£Ê½ÊıÁ¿ÏŞÖÆ
-@return  ½âÎö½á¹û×´Ì¬Âë
+@brief  æ£€æµ‹æ‰€æœ‰ç±»å‹çš„å¼‚å¸¸æ¨¡å¼
+@param pe_info  PEæ–‡ä»¶åˆ†æä¿¡æ¯ç»“æ„ä½“æŒ‡é’ˆ
+@param caves  ä»£ç æ´ç©´æ•°ç»„æŒ‡é’ˆ
+@param cave_count  ä»£ç æ´ç©´æ•°é‡
+@param anomalied  å­˜å‚¨æ£€æµ‹åˆ°çš„å¼‚å¸¸æ¨¡å¼æ•°ç»„
+@param anomaly_count å­˜å‚¨æ£€æµ‹åˆ°çš„å¼‚å¸¸æ¨¡å¼æ•°é‡çš„æŒ‡é’ˆ
+@param max_anomalies  æœ€å¤§å¼‚å¸¸æ¨¡å¼æ•°é‡é™åˆ¶
+@return  è§£æç»“æœçŠ¶æ€ç 
 
 
 
@@ -557,7 +557,7 @@ analysis_result_t detect_anomalies(const pe_analysis_t* pe_info,
 	uint32_t cave_count, anomaly_pattern_t* anomalied,
 	uint32_t* anomaly_count, uint32_t max_anomalies)
 {
-	//²ÎÊıÓĞĞ§ĞÔ¼ì²â
+	//å‚æ•°æœ‰æ•ˆæ€§æ£€æµ‹
 	if (!pe_info||!anomalied||!anomaly_count)
 	{
 
@@ -566,15 +566,15 @@ analysis_result_t detect_anomalies(const pe_analysis_t* pe_info,
 
 	}
 
-	//³õÊ¼»¯Êä³ö²ÎÊı
+	//åˆå§‹åŒ–è¾“å‡ºå‚æ•°
 	*anomaly_count = 0;
 
 
-	//³õÊ¼»¯Á÷³Ì±äÁ¿
+	//åˆå§‹åŒ–æµç¨‹å˜é‡
 	analysis_result_t result = RESULT_SUCCESS;
 	uint32_t temp_count = 0;
 
-	//¼ì²â½×¶Î-ìØÖµÒì³£·ÖÎö(¼ÓÃÜÊı¾İ Ñ¹ËõÊı¾İ Òì³£Ìî³ä)
+	//æ£€æµ‹é˜¶æ®µ-ç†µå€¼å¼‚å¸¸åˆ†æ(åŠ å¯†æ•°æ® å‹ç¼©æ•°æ® å¼‚å¸¸å¡«å……)
 
 	result = detect_entropy_anomalies(pe_info, &anomalied[*anomaly_count],
 		&temp_count, max_anomalies-*anomaly_count);
@@ -592,7 +592,7 @@ analysis_result_t detect_anomalies(const pe_analysis_t* pe_info,
 		return RESULT_SUCCESS;
 	}
 
-	//¼ì²â½×¶Î- ½á¹¹Òì³£·ÖÎö(È¨ÏŞ×éºÏ ´óĞ¡±ÈÀı ĞéÄâ½Ú)
+	//æ£€æµ‹é˜¶æ®µ- ç»“æ„å¼‚å¸¸åˆ†æ(æƒé™ç»„åˆ å¤§å°æ¯”ä¾‹ è™šæ‹ŸèŠ‚)
 	temp_count = 0;
 	result = detect_section_anomalies(pe_info, &anomalied[*anomaly_count],
 		&temp_count, max_anomalies - *anomaly_count);
@@ -609,7 +609,7 @@ analysis_result_t detect_anomalies(const pe_analysis_t* pe_info,
 
 		return RESULT_SUCCESS;
 	}
-	//¼ì²â½×¶Î-´úÂë¶´Ñ¨¾Û¼¯·ÖÎö(¹¥»÷Õß¿ÉÒÔÀûÓÃ¾Û¼¯µÄ´úÂë¶´Ñ¨½øĞĞ·ÖÉ¢µÄ¶ñÒâ´úÂë×¢Èë)
+	//æ£€æµ‹é˜¶æ®µ-ä»£ç æ´ç©´èšé›†åˆ†æ(æ”»å‡»è€…å¯ä»¥åˆ©ç”¨èšé›†çš„ä»£ç æ´ç©´è¿›è¡Œåˆ†æ•£çš„æ¶æ„ä»£ç æ³¨å…¥)
 	temp_count = 0;
 	result = detect_cave_cluster_anomalies(caves, cave_count, &anomalied[*anomaly_count],
 		&temp_count, max_anomalies - *anomaly_count);
@@ -627,7 +627,7 @@ analysis_result_t detect_anomalies(const pe_analysis_t* pe_info,
 		return RESULT_SUCCESS;
 	}
 
-	//¼ì²â½×¶Î-¿ÉÒÉÈë¿Úµã(¼ì²âÈë¿Úµã¸½¼ÓÊÇ·ñ´æÔÚ´úÂë¶´Ñ¨)
+	//æ£€æµ‹é˜¶æ®µ-å¯ç–‘å…¥å£ç‚¹(æ£€æµ‹å…¥å£ç‚¹é™„åŠ æ˜¯å¦å­˜åœ¨ä»£ç æ´ç©´)
 	temp_count = 0;
 	result = detect_entry_point_cave_cluster_anomalies(pe_info, caves, cave_count, &anomalied[*anomaly_count],
 		&temp_count, max_anomalies - *anomaly_count);

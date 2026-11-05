@@ -15,7 +15,8 @@ PE CodeCave 是一个面向 Windows PE 文件的静态代码洞穴检测与结�
 | PE 支持 | PE32 / PE32+ 文件头、节表、入口点、映像基址、节区权限与熵值 |
 | 检测对象 | 零填充洞穴、模式填充洞穴、节区间隙、入口点洞穴聚集、节区与熵值异常 |
 | 输出 | 控制台摘要、独立 HTML 报告、JSON 报告 |
-| 构建方式 | Visual Studio 2022 / MSBuild |
+| 自动化 | 原生 CLI 单文件/批量扫描、递归目录、自定义扩展名、CSV 汇总 |
+| 构建方式 | Visual Studio 2022 / MSBuild，Release 使用静态 C 运行时 |
 | 样本清单 | 339 条记录，336 个唯一 SHA256 |
 | 运行时依赖 | 无第三方运行时库 |
 
@@ -34,9 +35,32 @@ PE CodeCave 是一个面向 Windows PE 文件的静态代码洞穴检测与结�
 - 生成可筛选、可打印的 HTML 风险报告。
 - 生成带 schema 版本、评分拆解和明细数组的 JSON 报告。
 
-## 环境要求
+## 运行要求
 
 - Windows 10 或 Windows 11
+- x64 系统
+- 无需管理员权限
+- 发布版不要求安装 Visual Studio 或 VC++ Redistributable
+
+## 下载预编译版
+
+不想安装 Visual Studio 时，可以直接从 [Releases](https://github.com/mrxiaofaker/PE_CodeCave/releases/latest) 下载 `win-x64` 压缩包。解压后即可运行 `PE_CodeCave.exe`。
+
+```powershell
+.\PE_CodeCave.exe --version
+.\PE_CodeCave.exe --help
+```
+
+发布二进制当前未做代码签名，Windows SmartScreen 可能显示未知发布者提示。每个 Release 同时提供 `SHA256SUMS.txt` 供下载后校验。
+
+维护者可以用以下命令重新生成发布包：
+
+```powershell
+.\scripts\Build-Release.ps1 -Version 1.0.0
+```
+
+## 源码构建要求
+
 - Visual Studio 2022
 - “使用 C++ 的桌面开发”工作负载
 - Windows 10/11 SDK
@@ -79,19 +103,70 @@ msbuild .\PE_CodeCave.vcxproj `
   /m
 ```
 
-当前源码可以完成 `Release|x64` 构建，但会报告少量类型转换、隐式函数声明和 const 限定符警告。这些警告已被记录，后续应继续清理，不能解释为扫描结果一定可靠。
+当前源码可以完成无警告的 `Release|x64` 构建，并使用静态 C 运行时，发布版不要求安装 VC++ Redistributable。
 
 ## 命令行用法与参数
 
-当前主程序是交互式控制台程序，不解析传统命令行选项。支持的启动方式为：
+程序同时支持原生非交互 CLI 和无参数交互菜单。
+
+```powershell
+.\x64\Release\PE_CodeCave.exe --path <file-or-directory> [options]
+```
+
+### CLI 参数
+
+| 参数 | 作用 |
+| --- | --- |
+| `--path <path>` | 必填；输入 PE 文件或目录，也可以把路径作为第一个位置参数 |
+| `--recursive` | 目录模式递归扫描子目录 |
+| `--extensions <list>` | 自定义扩展名，逗号或分号分隔，默认 `exe,dll,sys`，支持 `*` |
+| `--html` | 为每个文件生成 HTML 报告 |
+| `--json` | 为每个文件生成 JSON 报告 |
+| `--out <directory>` | 报告和批量汇总输出目录，默认 `.` |
+| `--quiet` | 隐藏逐文件控制台明细，仍输出最终统计 |
+| `--verbose` | 显示逐文件控制台明细，默认开启 |
+| `--help`, `-h` | 显示帮助 |
+| `--version` | 显示版本 |
+
+目录模式始终在输出目录生成 `batch_summary.csv`。
+
+### 单文件示例
+
+```powershell
+.\x64\Release\PE_CodeCave.exe `
+  --path .\sample.exe `
+  --html `
+  --json `
+  --out .\reports
+```
+
+### 批量示例
+
+```powershell
+.\x64\Release\PE_CodeCave.exe `
+  --path 'F:\Delta Force\Delta Force' `
+  --recursive `
+  --extensions exe,dll,sys `
+  --json `
+  --out .\reports `
+  --quiet
+```
+
+批量 CSV 字段为：
+
+```text
+target_file,analysis_status,report_status,cave_count,anomaly_count,message
+```
+
+CLI 退出码：`0` 表示全部成功，`1` 表示存在分析或导出失败，`2` 表示参数或路径错误。
+
+### 交互菜单
+
+不带任何参数启动时仍会进入原交互菜单：
 
 ```powershell
 .\x64\Release\PE_CodeCave.exe
 ```
-
-启动后通过菜单和后续提示输入参数，不需要管理员权限。
-
-### 主菜单
 
 | 选项 | 功能 | 需要输入的参数 |
 | --- | --- | --- |
@@ -101,7 +176,7 @@ msbuild .\PE_CodeCave.vcxproj `
 | `4` | 显示帮助 | 无 |
 | `5` | 退出 | 确认 `y/n` |
 
-### 单文件分析
+交互单文件分析：
 
 ```text
 1
@@ -110,7 +185,7 @@ F:\samples\target.exe
 
 程序会输出 PE 摘要、节区列表、洞穴明细和异常明细。HTML/JSON 报告默认关闭，需要在配置菜单中选择 `3` 后开启。
 
-### 批量分析
+交互目录分析：
 
 选择 `2` 后依次输入：
 
@@ -120,21 +195,7 @@ F:\samples\target.exe
 4. 输入 `1` 扫描 `EXE/DLL/SYS`。
 5. 输入 `2` 扫描目录中的所有文件。
 
-批量扫描的“自定义扩展名”入口尚未实现完整输入逻辑，当前会回退到 `EXE/DLL/SYS`。
-
-### 原生命令行参数的边界
-
-当前版本没有实现以下非交互参数：
-
-```text
---input <file>
---output <directory>
---html
---json
---recursive
-```
-
-因此自动化复现由 [Run-Dataset.ps1](./scripts/Run-Dataset.ps1) 驱动交互菜单完成。若后续需要 CI 集成，应优先增加原生非交互 CLI，而不是继续依赖标准输入模拟。
+交互菜单里的“自定义扩展名”入口仍会回退到 `EXE/DLL/SYS`；自动化场景应使用 `--extensions`，该参数已经走原生 CLI 路径。
 
 ## 运行配置
 
@@ -283,10 +344,11 @@ F:\Delta Force\Delta Force
 ```text
 artifacts\reproduction\run_results.csv
 artifacts\reproduction\logs\PE-0001.log
+artifacts\reproduction\reports\*.json
 ...
 ```
 
-复现脚本先校验 SHA256，再调用当前程序重新分析，并保存原始控制台输出。它不会自动重新生成 HTML/JSON，因为当前程序报告导出会调用系统默认应用打开文件；需要批量报告时应先实现原生非交互 CLI。
+复现脚本先校验 SHA256，再调用原生 CLI 的 `--path`、`--json`、`--out` 和 `--quiet` 参数重新分析，生成 JSON 报告并保存进程输出。
 
 ## 误报根因与已知局限
 
@@ -303,8 +365,8 @@ artifacts\reproduction\logs\PE-0001.log
 9. **静态分析没有语义可达性**：工具不解引用、不反汇编控制流、不验证跳转目标，也不判断洞穴是否真的被调用。
 10. **数据集单一且无标签**：339 条记录来自一套软件安装目录，没有恶意/良性标签、家族标签或干净基线，不能计算准确率、召回率或误报率。
 11. **配置与实现存在差距**：部分菜单配置尚未接入全部检测路径，修改阈值后的行为可能与界面显示不完全一致。
-12. **批量功能尚不完整**：自定义扩展名和批量汇总报告仍是占位功能。
-13. **源文件编码不统一**：C 源文件中的中文主要使用 GBK/CP936，按 UTF-8 打开可能乱码。
+12. **交互批量菜单仍有占位项**：自定义扩展名和交互汇总报告尚未完全接入；CLI 的 `--extensions`、`--recursive` 和 `batch_summary.csv` 已可用。
+13. **路径长度受 `MAX_PATH` 限制**：超长路径和复杂目录树当前不能可靠处理。
 14. **仅支持 Windows PE**：不支持 ELF、Mach-O、Java、.NET 托管语义分析或动态沙箱行为。
 
 ### 如何降低误报
@@ -321,6 +383,7 @@ artifacts\reproduction\logs\PE-0001.log
 ```text
 PE_CodeCave/
 |-- main.c                      程序入口和交互菜单
+|-- cli.c                       原生 CLI、批量调度和 CSV 汇总
 |-- PE_CodeCave.vcxproj         Visual Studio 项目
 |-- include/
 |   |-- common.h                公共常量、结果码和上限
@@ -340,6 +403,7 @@ PE_CodeCave/
 |   `-- file_tils.c             文件读取和目录扫描
 |-- scripts/
 |   |-- Build-SampleManifest.ps1
+|   |-- Build-Release.ps1
 |   `-- Run-Dataset.ps1
 `-- samples/
     |-- manifest.csv

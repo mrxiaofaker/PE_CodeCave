@@ -15,7 +15,7 @@ analysis_result_t detect_cave_cluster_anomalies( const code_cave_t* caves, uint3
 
 analysis_result_t detect_entropy_anomalies(const pe_analysis_t* pe_info, anomaly_pattern_t* anomalied, uint32_t* anomaly_count, uint32_t max_anomalies);
 analysis_result_t detect_section_anomalies(const pe_analysis_t* pe_info,anomaly_pattern_t* anomalied, uint32_t* anomaly_count, uint32_t max_anomalies);
-//�쳣
+//异常
 analysis_result_t detect_anomalies(const pe_analysis_t* pe_info,const code_cave_t*caves,uint32_t cave_count, anomaly_pattern_t* anomalied,uint32_t* anomaly_count,uint32_t max_anomalies);
 
 #endif // !1

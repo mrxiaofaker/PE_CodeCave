@@ -5,9 +5,9 @@ static bool detector_initalized = false;
 static config_t* detect_config = NULL;
 
 /*
-@brief ³õÊ¼»¯´úÂë¶´Ñ¨¼ì²éÆ÷
+@brief åˆå§‹åŒ–ä»£ç æ´ç©´æ£€æŸ¥å™¨
 
-@return ³õÊ¼»¯½á¹û×´Ì¬Âë
+@return åˆå§‹åŒ–ç»“æœçŠ¶æ€ç 
 
 
 */
@@ -24,7 +24,7 @@ analysis_result_t initialize_cave_dectector(void)
 	return RESULT_SUCCESS;
 }
 /*
-@brief ÇåÀí´úÂë¶´Ñ¨¼ì²éÆ÷×ÊÔ´
+@brief æ¸…ç†ä»£ç æ´ç©´æ£€æŸ¥å™¨èµ„æº
 
 
 
@@ -37,7 +37,7 @@ void cleanup_cave_detector(void)
 }
 
 /*
-@brief ÅĞ¶Ï½ÚÊÇ·ñÎª¿ÉÖ´ĞĞ½Ú
+@brief åˆ¤æ–­èŠ‚æ˜¯å¦ä¸ºå¯æ‰§è¡ŒèŠ‚
 
 
 
@@ -56,15 +56,15 @@ bool is_executable_section(const section_info_t* section)
 
 /*
 
-@brief  ÁãÌî³ä´úÂë¶´Ñ¨¼ì²âËã·¨
-@param data ½ÚÊı¾İÖ¸Õë
-@param size  ½ÚÊı¾İ´óĞ¡
-@param base_offset ½ÚÔÚÎÄ¼şÖĞµÄÆ«ÒÆ
-@param section_index  ½ÚË÷Òı±àºÅ
-@param caves,  Êä³ö¶´Ñ¨Êı×é
-@param cave_count  Êä³ö¶´Ñ¨ÊıÁ¿
-@param max_cave  ×î´ó¿É¼ì²âµÄ¶´Ñ¨ÊıÁ¿
-@return  ·ÖÎö½á¹û×´Ì¬Âë
+@brief  é›¶å¡«å……ä»£ç æ´ç©´æ£€æµ‹ç®—æ³•
+@param data èŠ‚æ•°æ®æŒ‡é’ˆ
+@param size  èŠ‚æ•°æ®å¤§å°
+@param base_offset èŠ‚åœ¨æ–‡ä»¶ä¸­çš„åç§»
+@param section_index  èŠ‚ç´¢å¼•ç¼–å·
+@param caves,  è¾“å‡ºæ´ç©´æ•°ç»„
+@param cave_count  è¾“å‡ºæ´ç©´æ•°é‡
+@param max_cave  æœ€å¤§å¯æ£€æµ‹çš„æ´ç©´æ•°é‡
+@return  åˆ†æç»“æœçŠ¶æ€ç 
 
 
 
@@ -81,57 +81,57 @@ analysis_result_t detect_zero_fill_caves(const uint8_t*data,uint32_t size,
 
 	/*
 	
-	ÁãÌî³ä´úÂë¶´Ñ¨Ö¸µÄÊÇPEÎÄ¼şÖĞµÄÁ¬ĞøµÄ¿Õ×Ö½Ú(0x00)ĞòÁĞ
+	é›¶å¡«å……ä»£ç æ´ç©´æŒ‡çš„æ˜¯PEæ–‡ä»¶ä¸­çš„è¿ç»­çš„ç©ºå­—èŠ‚(0x00)åºåˆ—
 
-		  ±àÒëÆ÷¶ÔÆäÌî³å
+		  ç¼–è¯‘å™¨å¯¹å…¶å¡«å†²
 
-		  Á´½ÓÆ÷¿Õ¼äÓÅ»¯
+		  é“¾æ¥å™¨ç©ºé—´ä¼˜åŒ–
 
-		  ½á¹¹µÄ¶ÔÆëÒªÇó
+		  ç»“æ„çš„å¯¹é½è¦æ±‚
 
-    Ëã·¨Éè¼ÆË¼Â·
-	      ×´Ì¬»ú
-	         ²»ÔÚ¶´Ñ¨ÖĞ  in_cave=false
-			 ´æÔÚ¶´Ñ¨ÖĞ  in_cave=true;
-			 Óöµ½     0x00  ¼ÌĞø»òÕß¼ÌĞø¶´Ñ¨×´Ì¬
-			 Óöµ½·Ç   0x00  ÍË³ö¶´Ñ¨×´Ì¬±£³Ö¼ÇÂ¼
+    ç®—æ³•è®¾è®¡æ€è·¯
+	      çŠ¶æ€æœº
+	         ä¸åœ¨æ´ç©´ä¸­  in_cave=false
+			 å­˜åœ¨æ´ç©´ä¸­  in_cave=true;
+			 é‡åˆ°     0x00  ç»§ç»­æˆ–è€…ç»§ç»­æ´ç©´çŠ¶æ€
+			 é‡åˆ°é   0x00  é€€å‡ºæ´ç©´çŠ¶æ€ä¿æŒè®°å½•
 	
 	
 	
 	*/
-	//²ÎÊıĞ£Ñé
+	//å‚æ•°æ ¡éªŒ
 	if (!data||!caves||!cave_count)
 	{
 
 		return RESULT_ERROR_INVALID_PARAMETER;
 	}
 
-	//Ëã·¨×´Ì¬±äÁ¿³õÊ¼»¯
-	*cave_count = 0;           //Êä³ö²ÎÊı ¼ì²âµ½µÄ¶´Ñ¨ÊıÁ¿
-	uint32_t cave_start = 0;   //µ±Ç°¶´Ñ¨µÄÆğÊ¼µØÖ·
-	uint32_t cave_size = 0;	   //µ±Ç°¶´Ñ¨µÄ´óĞ¡
-	bool in_cave = false;      //×´Ì¬»ú±êÖ¾ ÕıÔÚÒ»¸ö¶´Ñ¨  false=²»ÔÚ¶´Ñ¨ÖĞ
+	//ç®—æ³•çŠ¶æ€å˜é‡åˆå§‹åŒ–
+	*cave_count = 0;           //è¾“å‡ºå‚æ•° æ£€æµ‹åˆ°çš„æ´ç©´æ•°é‡
+	uint32_t cave_start = 0;   //å½“å‰æ´ç©´çš„èµ·å§‹åœ°å€
+	uint32_t cave_size = 0;	   //å½“å‰æ´ç©´çš„å¤§å°
+	bool in_cave = false;      //çŠ¶æ€æœºæ ‡å¿— æ­£åœ¨ä¸€ä¸ªæ´ç©´  false=ä¸åœ¨æ´ç©´ä¸­
 
-	//Ö÷Ëã·¨Ñ­»· ÓĞÏŞ×´Ì¬»úÊµÏÖ
+	//ä¸»ç®—æ³•å¾ªç¯ æœ‰é™çŠ¶æ€æœºå®ç°
 	for (uint32_t i=0;i<size&&*cave_count<max_cave;i++)
 	{
-		//¼ì²âµ±Ç°×Ö½ÚÊÇ·ñÎª0x00
+		//æ£€æµ‹å½“å‰å­—èŠ‚æ˜¯å¦ä¸º0x00
 		if (data[i]==0x00)
 		{
-			//×´Ì¬×ª»»--Óöµ½0×Ö½Ú
+			//çŠ¶æ€è½¬æ¢--é‡åˆ°0å­—èŠ‚
 
 			if (!in_cave)
 			{
-				//Ö®Ç°²»ÔÚ¶´Ñ¨ÖĞ,ÏÖÔÚ·¢ÏÖÁË0×Ö½Ú
+				//ä¹‹å‰ä¸åœ¨æ´ç©´ä¸­,ç°åœ¨å‘ç°äº†0å­—èŠ‚
 
-				cave_start = i;//¼ÇÂ¼¶´Ñ¨ÆğÊ¼Î»ÖÃ
-				cave_size = 1;//³õÊ¼»¯¶´Ñ¨´óĞ¡Îª1×Ö½Ú
-				in_cave = true;//ÉèÖÃ×´Ì¬±êÖ¾
+				cave_start = i;//è®°å½•æ´ç©´èµ·å§‹ä½ç½®
+				cave_size = 1;//åˆå§‹åŒ–æ´ç©´å¤§å°ä¸º1å­—èŠ‚
+				in_cave = true;//è®¾ç½®çŠ¶æ€æ ‡å¿—
 
 			}
 			else {
 				//in cave -in cave
-				//Ö®Ç°ÒÑ¾­ÔÚ¶´Ñ¨ÖĞ,ÓÖÓöµ½ÁËÒ»¸ö 0×Ö½Ú
+				//ä¹‹å‰å·²ç»åœ¨æ´ç©´ä¸­,åˆé‡åˆ°äº†ä¸€ä¸ª 0å­—èŠ‚
 
 				//
 
@@ -150,32 +150,32 @@ analysis_result_t detect_zero_fill_caves(const uint8_t*data,uint32_t size,
 		}
 		else
 		{
-			//×´Ì¬×ª»»- Óöµ½·Ç0×Ö½Ú
+			//çŠ¶æ€è½¬æ¢- é‡åˆ°é0å­—èŠ‚
 
-			//¼ì²éÊÇ·ñĞèÒª½áÊøµ±Ç°¶´Ñ¨²¢¼ÇÂ¼½á¹û
+			//æ£€æŸ¥æ˜¯å¦éœ€è¦ç»“æŸå½“å‰æ´ç©´å¹¶è®°å½•ç»“æœ
 
 			if (in_cave&&cave_size>=MIN_CAVE_SIZE)
 			{
-				//Ö®Ç°ÔÚ¶´Ñ¨ÖĞ ²¢ÇÒ¶´Ñ¨´óĞ¡ãĞÖµ
-				//ÕâÊÇÒ»¸öÓĞĞ§µÄ¶´Ñ¨ĞèÒª¼ÇÂ¼ÏÂÀ´
+				//ä¹‹å‰åœ¨æ´ç©´ä¸­ å¹¶ä¸”æ´ç©´å¤§å°é˜ˆå€¼
+				//è¿™æ˜¯ä¸€ä¸ªæœ‰æ•ˆçš„æ´ç©´éœ€è¦è®°å½•ä¸‹æ¥
 
 				code_cave_t* cave = &caves[*cave_count];
 
-				//Ìî³ä¶´Ñ¨»ù±¾ĞÅÏ¢
+				//å¡«å……æ´ç©´åŸºæœ¬ä¿¡æ¯
 				cave->offset = base_offset + cave_start;
-				cave->rva = base_rva + cave_start;   //¾ø¶ÔÆ«ÒÆ =½Ú»ùÖ·+Ïà¶ÔÆ«ÒÆ
-				cave->size = cave_size;					   //¶´Ñ¨´óĞ¡
-				cave->section_index = section_index;	   //¶´Ñ¨ËùÔÚ½ÚË÷Òı
-				cave->cave_type = CAVE_TYPE_ZERO_FILL;	   //¶´Ñ¨ÀàĞÍ
+				cave->rva = base_rva + cave_start;   //ç»å¯¹åç§» =èŠ‚åŸºå€+ç›¸å¯¹åç§»
+				cave->size = cave_size;					   //æ´ç©´å¤§å°
+				cave->section_index = section_index;	   //æ´ç©´æ‰€åœ¨èŠ‚ç´¢å¼•
+				cave->cave_type = CAVE_TYPE_ZERO_FILL;	   //æ´ç©´ç±»å‹
 
 				snprintf(cave->descriptor, sizeof(cave->descriptor),
 					"[FOA] 0x%08X [RVA] 0x%08X size %u type %u",
 					cave->offset, cave->rva, cave->size, cave->cave_type);
 
-				//ÓĞĞ§¶´Ñ¨¼ÆÊıÆ÷ÀÛ¼Ó
+				//æœ‰æ•ˆæ´ç©´è®¡æ•°å™¨ç´¯åŠ 
 				(*cave_count)++;
 			}
-			//ÎŞÂÛÖ®Ç°ÊÇ·ñÔÚ¶´Ñ¨ÖĞ ,ÏÖÔÚ¶¼ĞèÒªÖØÖÃ×´Ì¬
+			//æ— è®ºä¹‹å‰æ˜¯å¦åœ¨æ´ç©´ä¸­ ,ç°åœ¨éƒ½éœ€è¦é‡ç½®çŠ¶æ€
 			in_cave = false;
 			cave_size = 0;
 
@@ -198,15 +198,15 @@ analysis_result_t detect_zero_fill_caves(const uint8_t*data,uint32_t size,
 
 	  /*
 
-	  @brief  Ä£Ê½Ìî³ä´úÂë¶´Ñ¨¼ì²âËã·¨
-	  @param data ½ÚÊı¾İÖ¸Õë
-	  @param size  ½ÚÊı¾İ´óĞ¡
-	  @param base_offset ½ÚÔÚÎÄ¼şÖĞµÄÆ«ÒÆ
-	  @param section_index  ½ÚË÷Òı±àºÅ
-	  @param caves,  Êä³ö¶´Ñ¨Êı×é
-	  @param cave_count  Êä³ö¶´Ñ¨ÊıÁ¿
-	  @param max_cave  ×î´ó¿É¼ì²âµÄ¶´Ñ¨ÊıÁ¿
-	  @return  ·ÖÎö½á¹û×´Ì¬Âë
+	  @brief  æ¨¡å¼å¡«å……ä»£ç æ´ç©´æ£€æµ‹ç®—æ³•
+	  @param data èŠ‚æ•°æ®æŒ‡é’ˆ
+	  @param size  èŠ‚æ•°æ®å¤§å°
+	  @param base_offset èŠ‚åœ¨æ–‡ä»¶ä¸­çš„åç§»
+	  @param section_index  èŠ‚ç´¢å¼•ç¼–å·
+	  @param caves,  è¾“å‡ºæ´ç©´æ•°ç»„
+	  @param cave_count  è¾“å‡ºæ´ç©´æ•°é‡
+	  @param max_cave  æœ€å¤§å¯æ£€æµ‹çš„æ´ç©´æ•°é‡
+	  @return  åˆ†æç»“æœçŠ¶æ€ç 
 
 
 
@@ -221,65 +221,65 @@ analysis_result_t detect_zero_fill_caves(const uint8_t*data,uint32_t size,
 
 		  /*
 		  
-		  0xCC   µ÷ÊÔ´úÂë
+		  0xCC   è°ƒè¯•ä»£ç 
 
 		  0X90   nop sled
 
-		  0xFF   Î´³õÊ¼»¯Ğ£Ñé
+		  0xFF   æœªåˆå§‹åŒ–æ ¡éªŒ
 		  
-		  //²ÎÊıĞ£Ñé
+		  //å‚æ•°æ ¡éªŒ
 
 		  
 		  
 		  */
 
 
-		  //²ÎÊıĞ£Ñé
+		  //å‚æ•°æ ¡éªŒ
 		  if (!data || !caves || !cave_count)
 		  {
 
 			  return RESULT_ERROR_INVALID_PARAMETER;
 		  }
 
-		  //Ëã·¨×´Ì¬±äÁ¿³õÊ¼»¯
-		  *cave_count = 0;           //Êä³ö²ÎÊı ¼ì²âµ½µÄ¶´Ñ¨ÊıÁ¿
+		  //ç®—æ³•çŠ¶æ€å˜é‡åˆå§‹åŒ–
+		  *cave_count = 0;           //è¾“å‡ºå‚æ•° æ£€æµ‹åˆ°çš„æ´ç©´æ•°é‡
 		  
-		  //¶¨Òå¼ì²âÄ£Ê½
+		  //å®šä¹‰æ£€æµ‹æ¨¡å¼
 		  const uint8_t patterns[] = { 0xCC,0x90,0xFF };
 		  const int pattern_count = sizeof(patterns) / sizeof(patterns);
 
-		  //Íâ²ãÑ­»·
-		  //Ô¤¶¨µÄÌî³äÄ£Ê½Ñ­»·±éÀú¼ì²â
+		  //å¤–å±‚å¾ªç¯
+		  //é¢„å®šçš„å¡«å……æ¨¡å¼å¾ªç¯éå†æ£€æµ‹
 		  for (size_t p=0;p< pattern_count;p++)
 		  {
-			  //µ±Ç°¼ì²âµÄÄ¿±êÄ£Ê½×Ö½Ú
+			  //å½“å‰æ£€æµ‹çš„ç›®æ ‡æ¨¡å¼å­—èŠ‚
 			  uint8_t pattern = patterns[p];
 
-			  //¼ì²â×´Ì¬±äÁ¿
-			  uint32_t cave_start = 0;   //µ±Ç°¶´Ñ¨µÄÆğÊ¼µØÖ·
-			  uint32_t cave_size = 0;	   //µ±Ç°¶´Ñ¨µÄ´óĞ¡
-			  bool in_cave = false;      //×´Ì¬»ú±êÖ¾ ÕıÔÚÒ»¸ö¶´Ñ¨  false=²»ÔÚ¶´Ñ¨ÖĞ
-			  //ÄÚ²ãÑ­»·
-			  for (size_t i=0;i<size&&*cave_count<max_cave;i++)
+			  //æ£€æµ‹çŠ¶æ€å˜é‡
+			  uint32_t cave_start = 0;   //å½“å‰æ´ç©´çš„èµ·å§‹åœ°å€
+			  uint32_t cave_size = 0;	   //å½“å‰æ´ç©´çš„å¤§å°
+			  bool in_cave = false;      //çŠ¶æ€æœºæ ‡å¿— æ­£åœ¨ä¸€ä¸ªæ´ç©´  false=ä¸åœ¨æ´ç©´ä¸­
+			  //å†…å±‚å¾ªç¯
+			  for (uint32_t i=0;i<size&&*cave_count<max_cave;i++)
 			  {
 
-				  //¼ì²âµ±Ç°×Ö½ÚÊÇ·ñÎªpattern
+				  //æ£€æµ‹å½“å‰å­—èŠ‚æ˜¯å¦ä¸ºpattern
 				  if (data[i] == pattern)
 				  {
-					  //×´Ì¬×ª»»--Óöµ½pattern
+					  //çŠ¶æ€è½¬æ¢--é‡åˆ°pattern
 
 					  if (!in_cave)
 					  {
-						  //Ö®Ç°²»ÔÚ¶´Ñ¨ÖĞ,ÏÖÔÚ·¢ÏÖÁËÄ£Ê½Æ¥Åä×Ö½Ú
+						  //ä¹‹å‰ä¸åœ¨æ´ç©´ä¸­,ç°åœ¨å‘ç°äº†æ¨¡å¼åŒ¹é…å­—èŠ‚
 
-						  cave_start = i;//¼ÇÂ¼¶´Ñ¨ÆğÊ¼Î»ÖÃ
-						  cave_size = 1;//³õÊ¼»¯¶´Ñ¨´óĞ¡Îª1×Ö½Ú
-						  in_cave = true;//ÉèÖÃ×´Ì¬±êÖ¾
+						  cave_start = i;//è®°å½•æ´ç©´èµ·å§‹ä½ç½®
+						  cave_size = 1;//åˆå§‹åŒ–æ´ç©´å¤§å°ä¸º1å­—èŠ‚
+						  in_cave = true;//è®¾ç½®çŠ¶æ€æ ‡å¿—
 
 					  }
 					  else {
 						  //in cave -in cave
-						  //Ö®Ç°ÒÑ¾­ÔÚ¶´Ñ¨ÖĞ,ÓÖÓöµ½ÁËÒ»¸öÄ£Ê½Æ¥Åä×Ö½Ú
+						  //ä¹‹å‰å·²ç»åœ¨æ´ç©´ä¸­,åˆé‡åˆ°äº†ä¸€ä¸ªæ¨¡å¼åŒ¹é…å­—èŠ‚
 
 						  //
 
@@ -294,33 +294,33 @@ analysis_result_t detect_zero_fill_caves(const uint8_t*data,uint32_t size,
 				  }
 				  else
 				  {
-					  //×´Ì¬×ª»»- Óöµ½·ÇÄ£Ê½Æ¥Åä×Ö½Ú
+					  //çŠ¶æ€è½¬æ¢- é‡åˆ°éæ¨¡å¼åŒ¹é…å­—èŠ‚
 
-					  //¼ì²éÊÇ·ñĞèÒª½áÊøµ±Ç°¶´Ñ¨²¢¼ÇÂ¼½á¹û
+					  //æ£€æŸ¥æ˜¯å¦éœ€è¦ç»“æŸå½“å‰æ´ç©´å¹¶è®°å½•ç»“æœ
 
 					  if (in_cave && cave_size >= MIN_CAVE_SIZE)
 					  {
-						  //Ö®Ç°ÔÚ¶´Ñ¨ÖĞ ²¢ÇÒ¶´Ñ¨´óĞ¡ãĞÖµ
-						  //ÕâÊÇÒ»¸öÓĞĞ§µÄ¶´Ñ¨ĞèÒª¼ÇÂ¼ÏÂÀ´
+						  //ä¹‹å‰åœ¨æ´ç©´ä¸­ å¹¶ä¸”æ´ç©´å¤§å°é˜ˆå€¼
+						  //è¿™æ˜¯ä¸€ä¸ªæœ‰æ•ˆçš„æ´ç©´éœ€è¦è®°å½•ä¸‹æ¥
 
 						  //&cave[42]  -arr.base
 						  code_cave_t* cave = &caves[*cave_count];
 
-						  //Ìî³ä¶´Ñ¨»ù±¾ĞÅÏ¢
+						  //å¡«å……æ´ç©´åŸºæœ¬ä¿¡æ¯
 						  cave->offset = base_offset + cave_start;
-						  cave->rva = base_rva + cave_start;   //¾ø¶ÔÆ«ÒÆ =½Ú»ùÖ·+Ïà¶ÔÆ«ÒÆ
-						  cave->size = cave_size;					   //¶´Ñ¨´óĞ¡
-						  cave->section_index = section_index;	   //¶´Ñ¨ËùÔÚ½ÚË÷Òı
-						  cave->cave_type = CAVE_TYPE_PATTERN_FILL;	   //¶´Ñ¨ÀàĞÍ
+						  cave->rva = base_rva + cave_start;   //ç»å¯¹åç§» =èŠ‚åŸºå€+ç›¸å¯¹åç§»
+						  cave->size = cave_size;					   //æ´ç©´å¤§å°
+						  cave->section_index = section_index;	   //æ´ç©´æ‰€åœ¨èŠ‚ç´¢å¼•
+						  cave->cave_type = CAVE_TYPE_PATTERN_FILL;	   //æ´ç©´ç±»å‹
 
 						  snprintf(cave->descriptor, sizeof(cave->descriptor),
 					"[FOA] 0x%08X [RVA] 0x%08X size %u type %u",
 					cave->offset, cave->rva, cave->size, cave->cave_type);
 
-						  //ÓĞĞ§¶´Ñ¨¼ÆÊıÆ÷ÀÛ¼Ó
+						  //æœ‰æ•ˆæ´ç©´è®¡æ•°å™¨ç´¯åŠ 
 						  (*cave_count)++;
 					  }
-					  //ÎŞÂÛÖ®Ç°ÊÇ·ñÔÚ¶´Ñ¨ÖĞ ,ÏÖÔÚ¶¼ĞèÒªÖØÖÃ×´Ì¬
+					  //æ— è®ºä¹‹å‰æ˜¯å¦åœ¨æ´ç©´ä¸­ ,ç°åœ¨éƒ½éœ€è¦é‡ç½®çŠ¶æ€
 					  in_cave = false;
 					  cave_size = 0;
 
@@ -347,10 +347,10 @@ analysis_result_t detect_zero_fill_caves(const uint8_t*data,uint32_t size,
 
 	  /*
 
-	@brief ´úÂë¶´Ñ¨ÍşĞ²µÈ¼¶¼ÆËãËã·¨
-	@param cave ÆÀ¹ÀµÄ´úÂë¶´Ñ¨½á¹¹ÌåÖ¸Õë
-	@param section  ´úÂë¶´Ñ¨ËùÔÚ½ÚÇø½á¹¹ÌåÖ¸Õë
-	@return  ÍşĞ²µÈ¼¶·ÖÊı 0.0~1.0 Ö®¼äµÄ¸¡µãÊı,Ô½¸ß±íÊ¾ÍşĞ²Ô½´ó
+	@brief ä»£ç æ´ç©´å¨èƒç­‰çº§è®¡ç®—ç®—æ³•
+	@param cave è¯„ä¼°çš„ä»£ç æ´ç©´ç»“æ„ä½“æŒ‡é’ˆ
+	@param section  ä»£ç æ´ç©´æ‰€åœ¨èŠ‚åŒºç»“æ„ä½“æŒ‡é’ˆ
+	@return  å¨èƒç­‰çº§åˆ†æ•° 0.0~1.0 ä¹‹é—´çš„æµ®ç‚¹æ•°,è¶Šé«˜è¡¨ç¤ºå¨èƒè¶Šå¤§
 
 
 	*/
@@ -358,68 +358,68 @@ analysis_result_t detect_zero_fill_caves(const uint8_t*data,uint32_t size,
 	  double calcute_suspicion_level(const code_cave_t* cave, const section_info_t* section)
 	  {
 		  /*
-		  xxÆÀ¹ÀÀíÂÛ»ù´¡
-			 - Î»ÖÃÒò×Ó ¶´Ñ¨ËùÔÚµÄ½ÚµÄ¿ÉÖ´ĞĞ
-			 - ´óĞ¡Òò×Ó	    ¶´Ñ¨ÈİÁ¿¾ø¶Ô¿É×¢Èë´úÂëµÄ¸´ÔÓĞÔ
-			 - ÀàĞÍÒò×Ó	    ²»Í¬ÀàĞÍµÄ¶´Ñ¨¿ÉÄÜ¾ßÓĞ²»Í¬µÄÍşĞ²µÈ¼¶
-			 - ìØÖµÒò×Ó	ËùÔÚ½ÚµÄìØÖµÔ½¸ß,¿ÉÄÜÊÇ¼ÓÃÜ|Ñ¹Ëõ|»ìÏı´úÂë,ÍşĞ²µÈ¼¶Ô½¸ß
+		  xxè¯„ä¼°ç†è®ºåŸºç¡€
+			 - ä½ç½®å› å­ æ´ç©´æ‰€åœ¨çš„èŠ‚çš„å¯æ‰§è¡Œ
+			 - å¤§å°å› å­	    æ´ç©´å®¹é‡ç»å¯¹å¯æ³¨å…¥ä»£ç çš„å¤æ‚æ€§
+			 - ç±»å‹å› å­	    ä¸åŒç±»å‹çš„æ´ç©´å¯èƒ½å…·æœ‰ä¸åŒçš„å¨èƒç­‰çº§
+			 - ç†µå€¼å› å­	æ‰€åœ¨èŠ‚çš„ç†µå€¼è¶Šé«˜,å¯èƒ½æ˜¯åŠ å¯†|å‹ç¼©|æ··æ·†ä»£ç ,å¨èƒç­‰çº§è¶Šé«˜
 				 
-		  ÆÀ·ÖËã·¨Éè¼Æ
-		       -»ù´¡·ÖÊı        Ã¿¸öÒò×Ó²úÉú¶ÀÁ¢µÄÍşĞ²ÊıÁ¿
-			   -È¨ÖØÉè¼Æ        Òò×ÓÈ¨ÖØ
-			   -¹éÒ»»¯          ·ÖÊı¹æ·¶µ½[0.0~1.0]
-			   -·§Öµ¿ØÖÆ        »®·ÖÍşĞ²µÈ¼¶Çø¼ä
-		  Òò×ÓÈ¨ÖØ·ÖÎö
+		  è¯„åˆ†ç®—æ³•è®¾è®¡
+		       -åŸºç¡€åˆ†æ•°        æ¯ä¸ªå› å­äº§ç”Ÿç‹¬ç«‹çš„å¨èƒæ•°é‡
+			   -æƒé‡è®¾è®¡        å› å­æƒé‡
+			   -å½’ä¸€åŒ–          åˆ†æ•°è§„èŒƒåˆ°[0.0~1.0]
+			   -é˜€å€¼æ§åˆ¶        åˆ’åˆ†å¨èƒç­‰çº§åŒºé—´
+		  å› å­æƒé‡åˆ†æ
 			
-		  Î»ÖÃÒò×Ó(0.4)    ¶´Ñ¨ËùÔÚµÄ½ÚµÄ¿ÉÖ´ĞĞ
-		  ´óĞ¡Òò×Ó(0.1~0.3)    ¶´Ñ¨ÈİÁ¿¾ø¶Ô¿É×¢Èë´úÂëµÄ¸´ÔÓĞÔ
-		  ÀàĞÍÒò×Ó(0.1~0.3)    ²»Í¬ÀàĞÍµÄ¶´Ñ¨¿ÉÄÜ¾ßÓĞ²»Í¬µÄÍşĞ²µÈ¼¶
-		  ìØÖµÒò×Ó(0.2)    ËùÔÚ½ÚµÄìØÖµÔ½¸ß,¿ÉÄÜÊÇ¼ÓÃÜ|Ñ¹Ëõ|»ìÏı´úÂë,ÍşĞ²µÈ¼¶Ô½¸ß
+		  ä½ç½®å› å­(0.4)    æ´ç©´æ‰€åœ¨çš„èŠ‚çš„å¯æ‰§è¡Œ
+		  å¤§å°å› å­(0.1~0.3)    æ´ç©´å®¹é‡ç»å¯¹å¯æ³¨å…¥ä»£ç çš„å¤æ‚æ€§
+		  ç±»å‹å› å­(0.1~0.3)    ä¸åŒç±»å‹çš„æ´ç©´å¯èƒ½å…·æœ‰ä¸åŒçš„å¨èƒç­‰çº§
+		  ç†µå€¼å› å­(0.2)    æ‰€åœ¨èŠ‚çš„ç†µå€¼è¶Šé«˜,å¯èƒ½æ˜¯åŠ å¯†|å‹ç¼©|æ··æ·†ä»£ç ,å¨èƒç­‰çº§è¶Šé«˜
 		  
-		  ÍşĞ²µÈ¼¶Ó³ÉäÇø¼ä
-		 - 0.0~0.3  µÍ·çÏÕ     Õı³£±àÒë²úÉú
-		 - 0.3~0.6  ÖĞµÈ·çÏÕ   ĞèÒª¹Ø×¢
-		 - 0.6~0.8  ¸ß·çÏÕ     ¿ÉÄÜµÄ¹¥»÷ÃÖ²¹
-		 - 0.8~1.0  ¼«¸ß·çÏÕ   ÑÏÖØµÄ¶ñÒâÀûÓÃ
+		  å¨èƒç­‰çº§æ˜ å°„åŒºé—´
+		 - 0.0~0.3  ä½é£é™©     æ­£å¸¸ç¼–è¯‘äº§ç”Ÿ
+		 - 0.3~0.6  ä¸­ç­‰é£é™©   éœ€è¦å…³æ³¨
+		 - 0.6~0.8  é«˜é£é™©     å¯èƒ½çš„æ”»å‡»å¼¥è¡¥
+		 - 0.8~1.0  æé«˜é£é™©   ä¸¥é‡çš„æ¶æ„åˆ©ç”¨
 
 		  
 		  */
-		  //²ÎÊıÑéÖ¤
+		  //å‚æ•°éªŒè¯
 
 		  if (!cave || !section)
 		  {
 			  return RESULT_ERROR_INVALID_PARAMETER;
 		  }
-		  //ÍşĞ²µÈ¼¶±äÁ¿³õÊ¼»¯
+		  //å¨èƒç­‰çº§å˜é‡åˆå§‹åŒ–
 		  double suspicion = 0.0;
 
-		  //Òò×Ó1- ½ÚµÄ¿ÉÖ´ĞĞÆÀ¹À
+		  //å› å­1- èŠ‚çš„å¯æ‰§è¡Œè¯„ä¼°
 		  if (is_executable_section(section))
 		  {
 
 			  suspicion += 0.4;
-			  //.text .code .page ÕâĞ©½ÚÍ¨³£ÊÇ¿ÉÖ´ĞĞµÄ,Èç¹û¶´Ñ¨³öÏÖÔÚÕâĞ©½ÚÖĞ,¿ÉÄÜÊÇ¶ñÒâ´úÂë×¢ÈëµÄ¼£Ïó
+			  //.text .code .page è¿™äº›èŠ‚é€šå¸¸æ˜¯å¯æ‰§è¡Œçš„,å¦‚æœæ´ç©´å‡ºç°åœ¨è¿™äº›èŠ‚ä¸­,å¯èƒ½æ˜¯æ¶æ„ä»£ç æ³¨å…¥çš„è¿¹è±¡
 		  }
 
-		  //Òò×Ó2- ¶´Ñ¨´óĞ¡ÆÀ¹À
+		  //å› å­2- æ´ç©´å¤§å°è¯„ä¼°
 		  if (cave->size>32)
 		  {
 
 			  suspicion += 0.3;
-			  //ÍêÕûµÄÄ£¿é¹¦ÄÜ
+			  //å®Œæ•´çš„æ¨¡å—åŠŸèƒ½
 		  }
 		  else if (cave->size>16)
 		  {
 			  suspicion += 0.2;
-			  //¼òµ¥µÄ¶ñÒâ¹¦ÄÜ
+			  //ç®€å•çš„æ¶æ„åŠŸèƒ½
 		  }
 		  else
 		  {
 			  suspicion += 0.1;
-			  //µ÷ÕûÖ¸Áî»òÔÚhookÖĞ×¢Èë´úÂë
+			  //è°ƒæ•´æŒ‡ä»¤æˆ–åœ¨hookä¸­æ³¨å…¥ä»£ç 
 		  }
 
-		  //¶´Ñ¨ÀàĞÍÆÀ¹À
+		  //æ´ç©´ç±»å‹è¯„ä¼°
 		  switch (cave->cave_type)
 		  {
 			  case CAVE_TYPE_ZERO_FILL:
@@ -428,14 +428,14 @@ analysis_result_t detect_zero_fill_caves(const uint8_t*data,uint32_t size,
 
 			  case CAVE_TYPE_PATTERN_FILL:
 				  suspicion += 0.1;
-				  //0xcc µ÷ÊÔ²ĞÁô
-				  //0x90 nopÖ¸ÁîÇøÓò
-				  //0xFF ³õÊ¼»¯Êı¾İ
+				  //0xcc è°ƒè¯•æ®‹ç•™
+				  //0x90 nopæŒ‡ä»¤åŒºåŸŸ
+				  //0xFF åˆå§‹åŒ–æ•°æ®
 
 				  break;
 			  case CAVE_TYPE_SECTION_GAP:
 				  suspicion += 0.3;
-				  //½ÚÇø¼äÏ¶¿ÉÄÜ°üº¬Î´³õÊ¼»¯Êı¾İ,µ÷ÊÔĞÅÏ¢»òÆäËû²»Ïà¹ØÊı¾İ,¿ÉÄÜÊÇÒş²ØµÄ¶ñÒâ´úÂë
+				  //èŠ‚åŒºé—´éš™å¯èƒ½åŒ…å«æœªåˆå§‹åŒ–æ•°æ®,è°ƒè¯•ä¿¡æ¯æˆ–å…¶ä»–ä¸ç›¸å…³æ•°æ®,å¯èƒ½æ˜¯éšè—çš„æ¶æ„ä»£ç 
 				  break;
 
 		  default:
@@ -446,7 +446,7 @@ analysis_result_t detect_zero_fill_caves(const uint8_t*data,uint32_t size,
 		  }
 
 
-		  //½ÚÊı¾İµÄìØÖµÆÀ¹À
+		  //èŠ‚æ•°æ®çš„ç†µå€¼è¯„ä¼°
 		  if (section->entropy<LOW_ENTROPY_THRESHOLD)
 		  {
 
@@ -465,58 +465,58 @@ analysis_result_t detect_zero_fill_caves(const uint8_t*data,uint32_t size,
 
 	  /*
 
-	  ½ÚÇø¼äÏ¶¼ì²âËã·¨
+	  èŠ‚åŒºé—´éš™æ£€æµ‹ç®—æ³•
 
-	  1.½ÚÇø¼äÏ¶ÊÇÖ¸PEÎÄ¼şÖĞÁ½¸ö½ÚÇøÖ®¼äµÄÎ´Ê¹ÓÃ¿Õ¼ä
-	  2.ÕâĞ©¼äÏ¶¿ÉÄÜ°üº¬Î´³õÊ¼»¯µÄÊı¾İ¡¢µ÷ÊÔĞÅÏ¢»òÆäËû²»Ïà¹ØµÄÊı¾İ
-	  3.¼ì²â½ÚÇø¼äÏ¶ÓĞÖúÓÚ·¢ÏÖÇ±ÔÚµÄ´úÂë¶´Ñ¨»òÒş²ØµÄ¶ñÒâ´úÂë
+	  1.èŠ‚åŒºé—´éš™æ˜¯æŒ‡PEæ–‡ä»¶ä¸­ä¸¤ä¸ªèŠ‚åŒºä¹‹é—´çš„æœªä½¿ç”¨ç©ºé—´
+	  2.è¿™äº›é—´éš™å¯èƒ½åŒ…å«æœªåˆå§‹åŒ–çš„æ•°æ®ã€è°ƒè¯•ä¿¡æ¯æˆ–å…¶ä»–ä¸ç›¸å…³çš„æ•°æ®
+	  3.æ£€æµ‹èŠ‚åŒºé—´éš™æœ‰åŠ©äºå‘ç°æ½œåœ¨çš„ä»£ç æ´ç©´æˆ–éšè—çš„æ¶æ„ä»£ç 
 
-	  Ëã·¨Éè¼ÆË¼Â·:
+	  ç®—æ³•è®¾è®¡æ€è·¯:
 
-	  1.±éÀúËùÓĞ½ÚÇø£¬°´ÎÄ¼şÆ«ÒÆÅÅĞò
-	  2.¼ÆËãÏàÁÚ½ÚÇøÖ®¼äµÄ¼äÏ¶´óĞ¡
-	  3.Èç¹û¼äÏ¶´óĞ¡´óÓÚµÈÓÚ×îĞ¡¶´Ñ¨´óĞ¡ãĞÖµ£¬Ôò¼ÇÂ¼ÎªÒ»¸ö´úÂë¶´Ñ¨
+	  1.éå†æ‰€æœ‰èŠ‚åŒºï¼ŒæŒ‰æ–‡ä»¶åç§»æ’åº
+	  2.è®¡ç®—ç›¸é‚»èŠ‚åŒºä¹‹é—´çš„é—´éš™å¤§å°
+	  3.å¦‚æœé—´éš™å¤§å°å¤§äºç­‰äºæœ€å°æ´ç©´å¤§å°é˜ˆå€¼ï¼Œåˆ™è®°å½•ä¸ºä¸€ä¸ªä»£ç æ´ç©´
 	  */
 	  /*
 
-	  @brief  ½ÚÇø¼äÏ¶¼ì²âËã·¨
-	  @param pe_info PEÎÄ¼ş·ÖÎöĞÅÏ¢½á¹¹ÌåÖ¸Õë
-	  @param caves Êä³ö¶´Ñ¨Êı×é
-	  @param cave_count Êä³ö¶´Ñ¨ÊıÁ¿
-	  @param max_caves ×î´ó¿É¼ì²âµÄ¶´Ñ¨ÊıÁ¿
-	  @return  ·ÖÎö½á¹û×´Ì¬Âë
+	  @brief  èŠ‚åŒºé—´éš™æ£€æµ‹ç®—æ³•
+	  @param pe_info PEæ–‡ä»¶åˆ†æä¿¡æ¯ç»“æ„ä½“æŒ‡é’ˆ
+	  @param caves è¾“å‡ºæ´ç©´æ•°ç»„
+	  @param cave_count è¾“å‡ºæ´ç©´æ•°é‡
+	  @param max_caves æœ€å¤§å¯æ£€æµ‹çš„æ´ç©´æ•°é‡
+	  @return  åˆ†æç»“æœçŠ¶æ€ç 
 
 	  */
 	  analysis_result_t detect_section_gaps(const pe_analysis_t* pe_info, 
 		  code_cave_t* caves, uint32_t* cave_count, uint32_t max_caves) {
-		  //²ÎÊıÑéÖ¤
+		  //å‚æ•°éªŒè¯
 		  if (!pe_info||!caves||!cave_count)
 		  {
 			  return RESULT_ERROR_INVALID_PARAMETER;
 		  }
 
-		  //Ëã·¨×´Ì¬±äÁ¿³õÊ¼»¯
-		  *cave_count = 0; //Êä³ö²ÎÊı ¼ì²âµ½µÄ¶´Ñ¨ÊıÁ¿
+		  //ç®—æ³•çŠ¶æ€å˜é‡åˆå§‹åŒ–
+		  *cave_count = 0; //è¾“å‡ºå‚æ•° æ£€æµ‹åˆ°çš„æ´ç©´æ•°é‡
 
-		  //ÏàÁÚ½ÚÇø¼äÏ¶¼ì²âÑ­»·
-		  for (size_t i=0;i+1<pe_info->section_count&&*cave_count<max_caves;i++)
+		  //ç›¸é‚»èŠ‚åŒºé—´éš™æ£€æµ‹å¾ªç¯
+		  for (uint32_t i=0;i+1<pe_info->section_count&&*cave_count<max_caves;i++)
 		  {
-			  //µ±Ç°½ÚÇø
+			  //å½“å‰èŠ‚åŒº
 			  const section_info_t* current = &pe_info->section[i];
 
 
 
-			  //ÏÂÒ»¸ö½Ú
+			  //ä¸‹ä¸€ä¸ªèŠ‚
 			  const section_info_t* next = &pe_info->section[i + 1];
 
-			  //¹ıÂËÎŞĞ§½ÚÇø
+			  //è¿‡æ»¤æ— æ•ˆèŠ‚åŒº
 			  if (current->raw_address==0||next->raw_address==0)
 			  {
 
 				  continue;
 
 			  }
-			  //¼ÆËã½ÚÇø¼äÏ¶
+			  //è®¡ç®—èŠ‚åŒºé—´éš™
 			  uint32_t current_end = current->virtual_address + current->virtual_size;
 			  if (current_end > next->virtual_address)
 			  {
@@ -524,7 +524,7 @@ analysis_result_t detect_zero_fill_caves(const uint8_t*data,uint32_t size,
 			  }
 			  uint32_t gap_size = next->virtual_address - current_end;
 
-			  //¼äÏ¶ÓĞĞ§ĞÔ¼ì²é
+			  //é—´éš™æœ‰æ•ˆæ€§æ£€æŸ¥
 			  if (gap_size>=MIN_CAVE_SIZE&&gap_size<=MAX_CAVE_SIZE)
 			  {
 				  code_cave_t* cave = &caves[*cave_count];
@@ -561,12 +561,12 @@ analysis_result_t detect_zero_fill_caves(const uint8_t*data,uint32_t size,
 
 /*
 
-@brief  ¼ì²â´úÂë¶´Ñ¨Ö÷º¯Êı
-@param pe_info PEÎÄ¼ş·ÖÎöĞÅÏ¢½á¹¹ÌåÖ¸Õë
-@param cave  ÓÃÓÚ´æ´¢¼ì²â½á¹ûµÄÊı×é
-@param cave_count ¼ì²âµ½µÄ¶´Ñ¨ÊıÁ¿µÄÖ¸Õë
-@param max_cave  ×î´ó¿É¼ì²âµÄ¶´Ñ¨ÊıÁ¿
-@return  ·ÖÎö½á¹û×´Ì¬Âë
+@brief  æ£€æµ‹ä»£ç æ´ç©´ä¸»å‡½æ•°
+@param pe_info PEæ–‡ä»¶åˆ†æä¿¡æ¯ç»“æ„ä½“æŒ‡é’ˆ
+@param cave  ç”¨äºå­˜å‚¨æ£€æµ‹ç»“æœçš„æ•°ç»„
+@param cave_count æ£€æµ‹åˆ°çš„æ´ç©´æ•°é‡çš„æŒ‡é’ˆ
+@param max_cave  æœ€å¤§å¯æ£€æµ‹çš„æ´ç©´æ•°é‡
+@return  åˆ†æç»“æœçŠ¶æ€ç 
 
 
 
@@ -576,7 +576,7 @@ analysis_result_t detect_zero_fill_caves(const uint8_t*data,uint32_t size,
 */
 analysis_result_t detect_code_caves(const pe_analysis_t* pe_info, code_cave_t* cave, uint32_t* cave_count, uint32_t max_caves)
 { 
-	//²ÎÊıĞ£Ñé
+	//å‚æ•°æ ¡éªŒ
 	if (!detector_initalized||!pe_info||!cave||!cave_count)
 	{
 
@@ -584,11 +584,11 @@ analysis_result_t detect_code_caves(const pe_analysis_t* pe_info, code_cave_t* c
 		return RESULT_ERROR_INVALID_PARAMETER;
 
 	}
-	//³õÊ¼»¯¼ì²â½á¹û¼ÆÊıÆ÷
+	//åˆå§‹åŒ–æ£€æµ‹ç»“æœè®¡æ•°å™¨
 	*cave_count = 0;
 
 
-	//»ñÈ¡ÎÄ¼şÊı¾İ
+	//è·å–æ–‡ä»¶æ•°æ®
 	uint8_t* file_data = NULL;
 
 
@@ -603,16 +603,16 @@ analysis_result_t detect_code_caves(const pe_analysis_t* pe_info, code_cave_t* c
 		return result;
 
 	}
-	//½ÚÇø¶´Ñ¨¼ì²âÑ­»·
+	//èŠ‚åŒºæ´ç©´æ£€æµ‹å¾ªç¯
 
-	for (size_t i=0;i<pe_info->section_count&&*cave_count<max_caves;i++)
+	for (uint32_t i=0;i<pe_info->section_count&&*cave_count<max_caves;i++)
 	{
-		//½ÚÊôĞÔ
+		//èŠ‚å±æ€§
 		//--------------------------------------------------------
-		//»ñÈ¡½ÚÇøĞÅÏ¢
+		//è·å–èŠ‚åŒºä¿¡æ¯
 		const section_info_t* section = &pe_info->section[i];
 
-		//¹ıÂËÎÄ¼ş¿Õ½ÚÇø
+		//è¿‡æ»¤æ–‡ä»¶ç©ºèŠ‚åŒº
 		if (section->raw_address==0||section->raw_size==0)
 		{
 
@@ -620,16 +620,16 @@ analysis_result_t detect_code_caves(const pe_analysis_t* pe_info, code_cave_t* c
 			continue;
 		}
 
-		//ÁãÌî³ä´úÂë¶´Ñ¨¼ì²â
+		//é›¶å¡«å……ä»£ç æ´ç©´æ£€æµ‹
 		//--------------------------------------------------------
 		uint32_t section_caves = 0;
 		uint32_t remaing_slots = max_caves - *cave_count;
 
 
-		//±ß½ç¼ì²é
+		//è¾¹ç•Œæ£€æŸ¥
 		if (section->raw_address<=file_size&&section->raw_size<=file_size-section->raw_address)
 		{
-			//ÁãÌî³äÉ¨Ãè
+			//é›¶å¡«å……æ‰«æ
 			result = detect_zero_fill_caves(file_data + section->raw_address,
 				section->raw_size,
 				section->raw_address,
@@ -666,17 +666,17 @@ analysis_result_t detect_code_caves(const pe_analysis_t* pe_info, code_cave_t* c
 			break;
 
 		}
-		//Ä£Ê½Ìî³ä´úÂë¶´Ñ¨¼ì²â
+		//æ¨¡å¼å¡«å……ä»£ç æ´ç©´æ£€æµ‹
 		//--------------------------------------------------------
 
 		section_caves = 0;
 		remaing_slots = max_caves - *cave_count;
 
 
-		//±ß½ç¼ì²é
+		//è¾¹ç•Œæ£€æŸ¥
 		if (section->raw_address <= file_size && section->raw_size <= file_size - section->raw_address)
 		{
-			//Ä£Ê½Ìî³äÉ¨Ãè
+			//æ¨¡å¼å¡«å……æ‰«æ
 			result = detect_pattern_fill_caves(file_data + section->raw_address,
 				section->raw_size,
 				section->raw_address,
@@ -717,7 +717,7 @@ analysis_result_t detect_code_caves(const pe_analysis_t* pe_info, code_cave_t* c
 	}
 
 
-	//½ÚÇø¼äÏ¶¼ì²â
+	//èŠ‚åŒºé—´éš™æ£€æµ‹
 
 	if (*cave_count<max_caves)
 	{
@@ -736,10 +736,10 @@ analysis_result_t detect_code_caves(const pe_analysis_t* pe_info, code_cave_t* c
 
 
 	}
-	//¶´Ñ¨·çÏÕÆÀ¹À
+	//æ´ç©´é£é™©è¯„ä¼°
 
 
-	for (size_t i = 0; i < *cave_count; i++)
+	for (uint32_t i = 0; i < *cave_count; i++)
 	{
 
 		const section_info_t* section = &pe_info->section[cave[i].section_index];

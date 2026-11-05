@@ -3,16 +3,17 @@
 #include "..\\parser\pe_parser.h"
 #include "..\\detector\anomaly_detector.h"
 #include "..\\analyzer\cave_detector.h"
+#include "..\\untils\\file_tils.h"
 
 static config_t* g_config = NULL;
 static bool g_engine_initialized = false;
 static uint8_t current_log_level = LOG_LEVEL_INFO;
 /*
 
-@brief  Êä³öÈÕÖ¾ÏûÏ¢
-@param level ÈÕÖ¾¼¶±ğ
-@param format ¸ñÊ½»¯×Ö·û´®
-@param ...  ¿É±ä¶¯²ÎÊıÁĞ±í
+@brief  è¾“å‡ºæ—¥å¿—æ¶ˆæ¯
+@param level æ—¥å¿—çº§åˆ«
+@param format æ ¼å¼åŒ–å­—ç¬¦ä¸²
+@param ...  å¯å˜åŠ¨å‚æ•°åˆ—è¡¨
 
 
 
@@ -24,33 +25,33 @@ static uint8_t current_log_level = LOG_LEVEL_INFO;
 
 void log_message(uint8_t level, const char* format, ...)
 {
-	//Êä³öÈÕÖ¾¼¶±ğÊÇ·ñÂú×ãÊä³öÌõ¼ş
+	//è¾“å‡ºæ—¥å¿—çº§åˆ«æ˜¯å¦æ»¡è¶³è¾“å‡ºæ¡ä»¶
 
-	if (level< LOG_LEVEL_INFO)
+	if (level < current_log_level)
 	{
 
 
 		return;
 	}
-	//ÈÕÖ¾¼¶±ğÃû³ÆÊı×é
-	const char* level_names[] = { "µ÷ÊÔ","ĞÅÏ¢","¾¯¸æ","´íÎó" };
+	//æ—¥å¿—çº§åˆ«åç§°æ•°ç»„
+	const char* level_names[] = { "è°ƒè¯•","ä¿¡æ¯","è­¦å‘Š","é”™è¯¯" };
 
 
-	//»ñÈ¡µ±Ç°Ê±¼ä´ê
+	//è·å–å½“å‰æ—¶é—´æ“
 	time_t now = time(NULL);
 
-	//×ª»»Îª±¾µØÊ±¼ä½á¹¹
+	//è½¬æ¢ä¸ºæœ¬åœ°æ—¶é—´ç»“æ„
 
 	struct  tm* tm_info = localtime(&now);
 
-	//Êä³öÊ±¼ä´ê¼°ÈÕÖ¾¼¶±ğ
+	//è¾“å‡ºæ—¶é—´æ“åŠæ—¥å¿—çº§åˆ«
 	printf("[%2d:%02d:%02d]  [%s]",
 		tm_info->tm_hour,
 		tm_info->tm_min,
 		tm_info->tm_sec,
 		level_names[level]);
 
-	//³õÊ¼»¯¿É±ä²ÎÊıÁĞ±í
+	//åˆå§‹åŒ–å¯å˜å‚æ•°åˆ—è¡¨
 	va_list args;
 
 	va_start(args, format);
@@ -69,8 +70,8 @@ void log_message(uint8_t level, const char* format, ...)
 
 /*
 
-@brief  ÉèÖÃÈÕÖ¾Êä³öµÈ¼¶
-@param level ÈÕÖ¾¼¶±ğ(DEBUG=0 INFO=1 WARNING =2 ERROR=3)
+@brief  è®¾ç½®æ—¥å¿—è¾“å‡ºç­‰çº§
+@param level æ—¥å¿—çº§åˆ«(DEBUG=0 INFO=1 WARNING =2 ERROR=3)
 
 
 
@@ -85,9 +86,9 @@ void Set_log_level(uint8_t level)
 }
 
 /*
-@brief ³õÊ¼»¯·ÖÎöÒıÇæ
-@param config ÓÃ»§ÅäÖÃ½á¹¹ÌåÖ¸Õë
-@return ³õÊ¼»¯½á¹û×´Ì¬Âë
+@brief åˆå§‹åŒ–åˆ†æå¼•æ“
+@param config ç”¨æˆ·é…ç½®ç»“æ„ä½“æŒ‡é’ˆ
+@return åˆå§‹åŒ–ç»“æœçŠ¶æ€ç 
 
 
 
@@ -100,22 +101,22 @@ void Set_log_level(uint8_t level)
 
 analysis_result_t initialize_engine(config_t* config)
 {
-	//¼ì²éÒıÇæÊÇ·ñ³õÊ¼»¯
+	//æ£€æŸ¥å¼•æ“æ˜¯å¦åˆå§‹åŒ–
 	if (g_engine_initialized)
 	{
 
-		log_message(LOG_LEVEL_WARNING, "ÒıÇæÒÑ¾­³õÊ¼»¯Íê³É");
+		log_message(LOG_LEVEL_WARNING, "å¼•æ“å·²ç»åˆå§‹åŒ–å®Œæˆ");
 		return RESULT_SUCCESS;
 
 	}
 
-	//ÑéÖ¤²ÎÊıÅäÖÃ
+	//éªŒè¯å‚æ•°é…ç½®
 	if (!config)
 	{
 		return RESULT_ERROR_INVALID_PARAMETER;
 	}
 
-	//È«¾ÖÅäÖÃ·ÖÅäÄÚ´æ
+	//å…¨å±€é…ç½®åˆ†é…å†…å­˜
 	g_config = malloc(sizeof(config_t));
 	if (!g_config)
 	{
@@ -123,10 +124,10 @@ analysis_result_t initialize_engine(config_t* config)
 		return RESULT_ERROR_MEMORY_ALLOCATION;
 	}
 
-	//¸´ÖÆÅäÖÃµ½È«¾Ö
+	//å¤åˆ¶é…ç½®åˆ°å…¨å±€
 	memcpy(g_config, config, sizeof(config_t));
 
-	//³õÊ¼»¯PE½âÎöÆ÷
+	//åˆå§‹åŒ–PEè§£æå™¨
 	if (initialize_pe_parser()!=RESULT_SUCCESS)
 	{
 		SAFE_FREE(g_config);
@@ -136,7 +137,7 @@ analysis_result_t initialize_engine(config_t* config)
 	}
 
 
-	//³õÊ¼»¯´úÂë¶´Ñ¨¼ì²âÆ÷
+	//åˆå§‹åŒ–ä»£ç æ´ç©´æ£€æµ‹å™¨
 	if (initialize_cave_dectector() != RESULT_SUCCESS)
 	{
 
@@ -147,7 +148,7 @@ analysis_result_t initialize_engine(config_t* config)
 
 	}
 
-	//³õÊ¼»¯Òì³£Ä£Ê½¼ì²âÆ÷
+	//åˆå§‹åŒ–å¼‚å¸¸æ¨¡å¼æ£€æµ‹å™¨
 	if (initialize_anmoaly_detector() != RESULT_SUCCESS)
 	{
 
@@ -159,10 +160,10 @@ analysis_result_t initialize_engine(config_t* config)
 
 	}
 
-	//ÉèÖÃ³õÊ¼»¯±êÖ¾
+	//è®¾ç½®åˆå§‹åŒ–æ ‡å¿—
 
 	g_engine_initialized = true;
-	log_message(LOG_LEVEL_INFO, "´úÂë¶´Ñ¨¼ì²âÒıÇæ³õÊ¼»¯³É¹¦");
+	log_message(LOG_LEVEL_INFO, "ä»£ç æ´ç©´æ£€æµ‹å¼•æ“åˆå§‹åŒ–æˆåŠŸ");
 
 
 
@@ -173,7 +174,7 @@ analysis_result_t initialize_engine(config_t* config)
 	return RESULT_SUCCESS;
 }
 /*
-@brief ÇåÀí·ÖÎöÒıÇæ
+@brief æ¸…ç†åˆ†æå¼•æ“
 
 
 
@@ -182,7 +183,7 @@ analysis_result_t initialize_engine(config_t* config)
 */
 void cleanup_engine(void)
 {
-//¼ì²éÊÇ·ñÒÑ¾­³õÊ¼»¯
+//æ£€æŸ¥æ˜¯å¦å·²ç»åˆå§‹åŒ–
 	if (!g_engine_initialized)
 	{
 		return;
@@ -190,26 +191,26 @@ void cleanup_engine(void)
 	}
 
 
-	//ÇåÀíPE½âÎöÆ÷
+	//æ¸…ç†PEè§£æå™¨
 	clean_pe_parser();
 
 
-	//ÇåÀí´úÂë¶´Ñ¨¼ì²âÆ÷
+	//æ¸…ç†ä»£ç æ´ç©´æ£€æµ‹å™¨
 	cleanup_cave_detector();
 
 
-	//ÇåÀíÒì³£Ä£Ê½¼ì²âÆ÷
+	//æ¸…ç†å¼‚å¸¸æ¨¡å¼æ£€æµ‹å™¨
 
 	cleanup_anmoaly_detector();
 
-	//ÊÍ·ÅÈ«¾ÖÅäÖÃÄÚ´æ
+	//é‡Šæ”¾å…¨å±€é…ç½®å†…å­˜
 	SAFE_FREE(g_config);
 
-	//ÖØÖÃ³õÊ¼»¯±êÖ¾
+	//é‡ç½®åˆå§‹åŒ–æ ‡å¿—
 
 	g_engine_initialized = false;
 
-	log_message(LOG_LEVEL_INFO, "´úÂë¶´Ñ¨¼ì²âÒıÇæÇåÀíÍê³É");
+	log_message(LOG_LEVEL_INFO, "ä»£ç æ´ç©´æ£€æµ‹å¼•æ“æ¸…ç†å®Œæˆ");
 
 
 
@@ -218,10 +219,10 @@ void cleanup_engine(void)
 }
 /*
 
-@brief  ·ÖÎöµ¥¸öÎÄ¼ş
-@param filename ·ÖÎöµÄÎÄ¼şÂ·¾¶
-@param report ÓÃÓÚ´æ´¢·ÖÎö½á¹¹µÄ±¨¸æ½á¹¹ÌåÖ¸Õë
-@return  ·ÖÎö½á¹û×´Ì¬Âë
+@brief  åˆ†æå•ä¸ªæ–‡ä»¶
+@param filename åˆ†æçš„æ–‡ä»¶è·¯å¾„
+@param report ç”¨äºå­˜å‚¨åˆ†æç»“æ„çš„æŠ¥å‘Šç»“æ„ä½“æŒ‡é’ˆ
+@return  åˆ†æç»“æœçŠ¶æ€ç 
 
 
 
@@ -231,7 +232,7 @@ void cleanup_engine(void)
 
 analysis_result_t analyze_file(const char* filename, analysis_report_t* report)
 {
-	//¼ì²éÒıÇæÊÇ·ñ³õÊ¼»¯
+	//æ£€æŸ¥å¼•æ“æ˜¯å¦åˆå§‹åŒ–
 
 	if (!g_engine_initialized)
 	{
@@ -239,14 +240,14 @@ analysis_result_t analyze_file(const char* filename, analysis_report_t* report)
 
 	}
 
-	//ÑéÖ¤²ÎÊıÓĞĞ§ĞÔ
+	//éªŒè¯å‚æ•°æœ‰æ•ˆæ€§
 	if (!filename||!report)
 	{
 
-		return RESULT_ERROR_INVALID_PARAMETER;//ÎŞĞ§µÄ²ÎÊı
+		return RESULT_ERROR_INVALID_PARAMETER;//æ— æ•ˆçš„å‚æ•°
 	}
 
-	//¼ì²éÎÄ¼şÊÇ·ñ´æÔÚ
+	//æ£€æŸ¥æ–‡ä»¶æ˜¯å¦å­˜åœ¨
 	if (!file_exists(filename))
 	{
 
@@ -255,39 +256,39 @@ analysis_result_t analyze_file(const char* filename, analysis_report_t* report)
 	}
 
 
-	//³õÊ¼»¯±¨¸æ½á¹¹Ìå
+	//åˆå§‹åŒ–æŠ¥å‘Šç»“æ„ä½“
 
 	memset(report, 0, sizeof(analysis_report_t));
 
-	//¼ÇÂ¼Ä¿±êÎÄ¼şÂ·¾¶
+	//è®°å½•ç›®æ ‡æ–‡ä»¶è·¯å¾„
 
 	strcpy(report->target_file, filename);
 
-	//¼ÇÂ¼·ÖÎöÊ±¼ä
+	//è®°å½•åˆ†ææ—¶é—´
 	report->analysis_time = time(NULL);
 
-	//ÓÃ»§ĞÅÏ¢ÌáÊ¾
-	log_message(LOG_LEVEL_INFO, "¿ªÊ¼·ÖÎöÎÄ¼ş:%s", filename);
+	//ç”¨æˆ·ä¿¡æ¯æç¤º
+	log_message(LOG_LEVEL_INFO, "å¼€å§‹åˆ†ææ–‡ä»¶:%s", filename);
 
-	//½âÎöPEÎÄ¼ş½á¹¹
+	//è§£æPEæ–‡ä»¶ç»“æ„
 	analysis_result_t result = parse_pe_file(filename, &report->pe_info);
 	if (result!=RESULT_SUCCESS)
 	{
-		log_message(LOG_LEVEL_ERROR, "PEÎÄ¼ş½âÎöÊ§°Ü");
+		log_message(LOG_LEVEL_ERROR, "PEæ–‡ä»¶è§£æå¤±è´¥");
 
 		return result;
 	}
-	//¼ì²â´úÂë¶´Ñ¨(ÊıÁ¿ÏŞÖÆ150)
+	//æ£€æµ‹ä»£ç æ´ç©´(æ•°é‡é™åˆ¶150)
 	result = detect_code_caves(&report->pe_info, report->cave,
 		&report->total_cave_found, MAX_CAVES_PER_FILE);
 	if (result != RESULT_SUCCESS)
 	{
-		log_message(LOG_LEVEL_ERROR, "´úÂë¶´Ñ¨¼ì²âÊ§°Ü");
+		log_message(LOG_LEVEL_ERROR, "ä»£ç æ´ç©´æ£€æµ‹å¤±è´¥");
 
 		return result;
 	}
 
-	//¼ì²âÒì³£Ä£Ê½(ÊıÁ¿ÏŞÖÆ50)
+	//æ£€æµ‹å¼‚å¸¸æ¨¡å¼(æ•°é‡é™åˆ¶50)
 
 	result = detect_anomalies(&report->pe_info, report->cave,
 		report->total_cave_found,
@@ -296,7 +297,7 @@ analysis_result_t analyze_file(const char* filename, analysis_report_t* report)
 
 	if (result != RESULT_SUCCESS)
 	{
-		log_message(LOG_LEVEL_ERROR, "Òì³£Ä£Ê½¼ì²âÊ§°Ü");
+		log_message(LOG_LEVEL_ERROR, "å¼‚å¸¸æ¨¡å¼æ£€æµ‹å¤±è´¥");
 
 		return result;
 	}

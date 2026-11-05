@@ -39,6 +39,9 @@
     <ClCompile Include="main.c">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="cli.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
     <ClCompile Include="analyzer\cave_detector.c">
       <Filter>analyzer</Filter>
     </ClCompile>
@@ -62,6 +65,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="cli.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
     <ClInclude Include="analyzer\cave_detector.h">
       <Filter>analyzer</Filter>
     </ClInclude>

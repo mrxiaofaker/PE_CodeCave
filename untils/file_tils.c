@@ -4,10 +4,10 @@
 
 
 /*
-@brief ¼ì²éÂ·¾¶
-@detail ÅĞ¶ÏÓÃ»§µ±Ç°Ğ´ÈëµÄÊä³öÂ·¾¶ÊÇ·ñ´æÔÚ¸ñÊ½´íÎó
-@param path ÓÃ»§ÊäÈëÂ·¾¶
-@return TRUE Â·¾¶ºÏ·¨ false Â·¾¶´íÎó
+@brief æ£€æŸ¥è·¯å¾„
+@detail åˆ¤æ–­ç”¨æˆ·å½“å‰å†™å…¥çš„è¾“å‡ºè·¯å¾„æ˜¯å¦å­˜åœ¨æ ¼å¼é”™è¯¯
+@param path ç”¨æˆ·è¾“å…¥è·¯å¾„
+@return TRUE è·¯å¾„åˆæ³• false è·¯å¾„é”™è¯¯
 
 
 */
@@ -29,7 +29,7 @@ BOOL is_valid_output_path(const char* path) {
 	{
 		if (strchr(invalid_chars,*p))
 		{
-			log_message(LOG_LEVEL_ERROR, "ÊäÈëÂ·¾¶´æÔÚ´íÎó×Ö·û");
+			log_message(LOG_LEVEL_ERROR, "è¾“å…¥è·¯å¾„å­˜åœ¨é”™è¯¯å­—ç¬¦");
 
 			return false;
 		}
@@ -42,9 +42,9 @@ BOOL is_valid_output_path(const char* path) {
 }
 
 /*
-@brief »ñÈ¡ÎÄ¼şÀ©Õ¹Ãû
-@param filename ÎÄ¼şÂ·¾¶
-@return ÎÄ¼şÀ©Õ¹ÃûÖ¸Õë²»°üº¬.
+@brief è·å–æ–‡ä»¶æ‰©å±•å
+@param filename æ–‡ä»¶è·¯å¾„
+@return æ–‡ä»¶æ‰©å±•åæŒ‡é’ˆä¸åŒ…å«.
 
 
 */
@@ -72,9 +72,9 @@ const char* get_file_extension(const char* filename)
 
 }
 /*
-@brief ¼ì²éÎÄ¼şÊÇ·ñ´æÔÚ
-@param filename ÎÄ¼şÂ·¾¶
-@return TRUE ÎÄ¼ş´æÔÚ false ÎÄ¼ş²»´æÔÚ
+@brief æ£€æŸ¥æ–‡ä»¶æ˜¯å¦å­˜åœ¨
+@param filename æ–‡ä»¶è·¯å¾„
+@return TRUE æ–‡ä»¶å­˜åœ¨ false æ–‡ä»¶ä¸å­˜åœ¨
 
 
 */
@@ -99,10 +99,10 @@ BOOL file_exists(const char* filename)
 	return 0;
 }
 /*
-@brief ¼ì²éÎÄ¼şÊÇ·ñÎªPE¸ñÊ½ÎÄ¼ş
-@detail Í¨¹ıÎÄ¼şÀ©Õ¹ÃûÅĞ¶ÏÊÇ·ñÎªPEÎÄ¼ş·ÀÖ¹¶ñÒâÈí¼şÄ¨³ıPEÖ¸ÎÆ
-@param filename ÎÄ¼şÂ·¾¶
-@return TRUE PEÎÄ¼ş false ·Ç·¨ÎÄ¼ş
+@brief æ£€æŸ¥æ–‡ä»¶æ˜¯å¦ä¸ºPEæ ¼å¼æ–‡ä»¶
+@detail é€šè¿‡æ–‡ä»¶æ‰©å±•ååˆ¤æ–­æ˜¯å¦ä¸ºPEæ–‡ä»¶é˜²æ­¢æ¶æ„è½¯ä»¶æŠ¹é™¤PEæŒ‡çº¹
+@param filename æ–‡ä»¶è·¯å¾„
+@return TRUE PEæ–‡ä»¶ false éæ³•æ–‡ä»¶
 
 
 */
@@ -132,12 +132,12 @@ BOOL is_pe_file(const char* filename)
 }
 
 /*
-@brief »ñÈ¡ÎÄ¼ş´óĞ¡
+@brief è·å–æ–‡ä»¶å¤§å°
 
-@param filename ÎÄ¼şÂ·¾¶
+@param filename æ–‡ä»¶è·¯å¾„
 
-@param size  ÓÃ»§´æ´¢ÎÄ¼ş´óĞ¡µÄÖ¸Õë
-@return ²Ù×÷½á¹ûµÄ×´Ì¬Âë
+@param size  ç”¨æˆ·å­˜å‚¨æ–‡ä»¶å¤§å°çš„æŒ‡é’ˆ
+@return æ“ä½œç»“æœçš„çŠ¶æ€ç 
 
 
 
@@ -146,7 +146,7 @@ BOOL is_pe_file(const char* filename)
 
 analysis_result_t get_file_size(const char* filename, uint32_t* size)
 {
-	//ÑéÖ¤²ÎÊıÓĞĞ§ĞÔ
+	//éªŒè¯å‚æ•°æœ‰æ•ˆæ€§
 	if (!filename||!size)
 	{
 
@@ -155,7 +155,7 @@ analysis_result_t get_file_size(const char* filename, uint32_t* size)
 	}
 
 
-	//´ò¿ªÎÄ¼ş
+	//æ‰“å¼€æ–‡ä»¶
 	FILE* file = fopen(filename, "rb");
 
 	if (!file)
@@ -166,14 +166,14 @@ analysis_result_t get_file_size(const char* filename, uint32_t* size)
 	}
 
 
-	//ÒÆ¶¯ÎÄ¼şÖ¸Õë(Ä©Î²)
+	//ç§»åŠ¨æ–‡ä»¶æŒ‡é’ˆ(æœ«å°¾)
 	fseek(file, 0, SEEK_END);
 
-	//»ñÈ¡ÎÄ¼şÖ¸Õë¾ÙÀıÎÄ¼şÍ·²¿Æ«ÒÆ(ÎÄ¼ş´óĞ¡)
+	//è·å–æ–‡ä»¶æŒ‡é’ˆä¸¾ä¾‹æ–‡ä»¶å¤´éƒ¨åç§»(æ–‡ä»¶å¤§å°)
 
 
 	long file_size = ftell(file);
-	if (file < 0)
+	if (file_size < 0)
 	{
 
 		fclose(file);
@@ -186,12 +186,12 @@ analysis_result_t get_file_size(const char* filename, uint32_t* size)
 	return RESULT_SUCCESS;
 }
 /*
-@brief ½«ÎÄ¼şÄÚÈİ¶ÁÈ¡µ½ÄÚ´æÖĞ
+@brief å°†æ–‡ä»¶å†…å®¹è¯»å–åˆ°å†…å­˜ä¸­
 
-@param filename ÎÄ¼şÂ·¾¶
-@param data  ÓÃÓÚ´æ´¢ÎÄ¼şÊı¾İµÄÖ¸ÕëµÄÖ¸Õë
-@param size  ÓÃ»§´æ´¢ÎÄ¼ş´óĞ¡µÄÖ¸Õë 
-@return ²Ù×÷½á¹ûµÄ×´Ì¬Âë
+@param filename æ–‡ä»¶è·¯å¾„
+@param data  ç”¨äºå­˜å‚¨æ–‡ä»¶æ•°æ®çš„æŒ‡é’ˆçš„æŒ‡é’ˆ
+@param size  ç”¨æˆ·å­˜å‚¨æ–‡ä»¶å¤§å°çš„æŒ‡é’ˆ
+@return æ“ä½œç»“æœçš„çŠ¶æ€ç 
 
 
 
@@ -200,19 +200,19 @@ analysis_result_t get_file_size(const char* filename, uint32_t* size)
 
 analysis_result_t read_file_to_memory(const char* filename, uint8_t** data, uint32_t* size)
 {
-	//ÑéÖ¤²ÎÊıÓĞĞ§ĞÔ
+	//éªŒè¯å‚æ•°æœ‰æ•ˆæ€§
 
 	if (!filename || !data || !size)
 	{
 		return RESULT_ERROR_INVALID_PARAMETER;
 
 	}
-	//³õÊ¼»¯Êä³ö²ÎÊı
+	//åˆå§‹åŒ–è¾“å‡ºå‚æ•°
 
 
 	*data = NULL;
 	*size = 0;
-	//»ñÈ¡ÎÄ¼ş´óĞ¡
+	//è·å–æ–‡ä»¶å¤§å°
 
 	analysis_result_t result = get_file_size(filename, size);
 	if (result!=RESULT_SUCCESS)
@@ -223,7 +223,7 @@ analysis_result_t read_file_to_memory(const char* filename, uint8_t** data, uint
 	}
 
 
-	//¼ì²éÊÇ·ñÎª¿ÕÎÄ¼ş
+	//æ£€æŸ¥æ˜¯å¦ä¸ºç©ºæ–‡ä»¶
 	if (*size==0)
 	{
 
@@ -231,7 +231,7 @@ analysis_result_t read_file_to_memory(const char* filename, uint8_t** data, uint
 
 	}
 
-	//ÎªÎÄ¼şÄÚÈİ·ÖÅäÄÚ´æ
+	//ä¸ºæ–‡ä»¶å†…å®¹åˆ†é…å†…å­˜
 
 	*data = malloc(*size);
 
@@ -243,7 +243,7 @@ analysis_result_t read_file_to_memory(const char* filename, uint8_t** data, uint
 
 	}
 
-	//´ò¿ªÎÄ¼ş
+	//æ‰“å¼€æ–‡ä»¶
 
 	FILE* file = fopen(filename, "rb");
 	if (!file)
@@ -254,14 +254,14 @@ analysis_result_t read_file_to_memory(const char* filename, uint8_t** data, uint
 
 	}
 
-	//¶ÁÈ¡ÎÄ¼şÄÚÈİ
+	//è¯»å–æ–‡ä»¶å†…å®¹
 
 	size_t bytes_read = fread(*data, 1, *size, file);
 
 	fclose(file);
 	
 	
-	//¼ì²éÊÇ·ñÍêÕû¶ÁÈ¡ÁËÎÄ¼ş
+	//æ£€æŸ¥æ˜¯å¦å®Œæ•´è¯»å–äº†æ–‡ä»¶
 	if (bytes_read!=*size)
 	{//safe
 		SAFE_FREE(*data);
@@ -282,7 +282,7 @@ analysis_result_t read_file_to_memory(const char* filename, uint8_t** data, uint
 
 
 /*
-@brief ÅĞ¶Ï²ÎÊıÂ·¾¶ÊÇÎªÄ¿Â¼
+@brief åˆ¤æ–­å‚æ•°è·¯å¾„æ˜¯ä¸ºç›®å½•
 
 @return
 */
@@ -294,7 +294,7 @@ bool is_directroy(const char* path)
 }
 
 	DWORD attributes= GetFileAttributesA(path);
-	//ÅĞ¶ÏÎÄ¼şÊÇ·ñÓĞĞ§,¼°ÆäÊÇ²»ÊÇÒ»¸öÄ¿Â¼
+	//åˆ¤æ–­æ–‡ä»¶æ˜¯å¦æœ‰æ•ˆ,åŠå…¶æ˜¯ä¸æ˜¯ä¸€ä¸ªç›®å½•
 	return (attributes!=INVALID_FILE_ATTRIBUTES&&(attributes&FILE_ATTRIBUTE_DIRECTORY));
 	
 
@@ -302,11 +302,11 @@ bool is_directroy(const char* path)
 
 }
 /*
-@brief ÅĞ¶ÏÎÄ¼şÀ©Õ¹ÃûÊÇ·ñÆ¥Åä
-@param filename ÎÄ¼şÃû
-@param extensions ÒªÆ¥ÅäµÄÎÄ¼şÀ©Õ¹ÃûÊı×é
-@param ext_count À©Õ¹ÃûÊıÁ¿
-@return true Æ¥Åä false ²»Æ¥Åä
+@brief åˆ¤æ–­æ–‡ä»¶æ‰©å±•åæ˜¯å¦åŒ¹é…
+@param filename æ–‡ä»¶å
+@param extensions è¦åŒ¹é…çš„æ–‡ä»¶æ‰©å±•åæ•°ç»„
+@param ext_count æ‰©å±•åæ•°é‡
+@return true åŒ¹é… false ä¸åŒ¹é…
 
 
 */
@@ -326,7 +326,11 @@ bool matches_extension(const char* filename, const char** extensions,int ext_cou
 
 	for (size_t i=0;i<ext_count;i++)
 	{
-		if (strcmp(file_ext,extensions[i])==0)
+		if (extensions[i][0] == '*')
+		{
+			return TRUE;
+		}
+		if (_stricmp(file_ext,extensions[i])==0)
 		{
 			return TRUE;
 		}
@@ -336,14 +340,14 @@ bool matches_extension(const char* filename, const char** extensions,int ext_cou
 }
 
 /*
-@brief ½«ÎÄ¼şÌí¼Óµ½ÎÄ¼şÁĞ±í
-@param  file_list ÎÄ¼şÁĞ±í½á¹¹ÌåÖ¸Õë
-@param extensions ÒªÆ¥ÅäµÄÎÄ¼şÀ©Õ¹ÃûÊı×é
-@return ²Ù×÷½á¹û×´Ì¬Âë
+@brief å°†æ–‡ä»¶æ·»åŠ åˆ°æ–‡ä»¶åˆ—è¡¨
+@param  file_list æ–‡ä»¶åˆ—è¡¨ç»“æ„ä½“æŒ‡é’ˆ
+@param extensions è¦åŒ¹é…çš„æ–‡ä»¶æ‰©å±•åæ•°ç»„
+@return æ“ä½œç»“æœçŠ¶æ€ç 
 
 */
 analysis_result_t add_file_to_list(file_list_t* file_list, const char* filename) {
-	//ÑéÖ¤²ÎÊıÓĞĞ§ĞÔ
+	//éªŒè¯å‚æ•°æœ‰æ•ˆæ€§
 	if (!file_list||!filename)
 	{
 
@@ -386,19 +390,19 @@ analysis_result_t add_file_to_list(file_list_t* file_list, const char* filename)
 
 
 /*
-@brief É¨ÃèÄ¿Â¼ÖĞµÄÖ¸¶¨¸ñÊ½ÎÄ¼ş
-@param directory ÒªÉ¨ÃèµÄÄ¿Â¼Â·¾¶
-@param extensions ÒªÆ¥ÅäµÄÎÄ¼şÀ©Õ¹ÃûÊı×é
-@param ext_count À©Õ¹ÃûÊıÁ¿
-@param recursive ÊÇ·ñµİ¹éÉ¨Ãè×ÓÄ¿Â¼
-@param file_list ÓÃÓÚ´æ´¢ÕÒµ½µÄÎÄ¼ş
-@return ²Ù×÷½á¹û×´Ì¬Âë
+@brief æ‰«æç›®å½•ä¸­çš„æŒ‡å®šæ ¼å¼æ–‡ä»¶
+@param directory è¦æ‰«æçš„ç›®å½•è·¯å¾„
+@param extensions è¦åŒ¹é…çš„æ–‡ä»¶æ‰©å±•åæ•°ç»„
+@param ext_count æ‰©å±•åæ•°é‡
+@param recursive æ˜¯å¦é€’å½’æ‰«æå­ç›®å½•
+@param file_list ç”¨äºå­˜å‚¨æ‰¾åˆ°çš„æ–‡ä»¶
+@return æ“ä½œç»“æœçŠ¶æ€ç 
 
 
 */
 
 analysis_result_t scan_directory_for_files(const char* directory, const char** extensions, int ext_count, bool recursive, file_list_t* file_list) {
-	//ÑéÖ¤²ÎÊıÓĞĞ§ĞÔ
+	//éªŒè¯å‚æ•°æœ‰æ•ˆæ€§
 	if (!directory||!file_list)
 	{
 		return RESULT_ERROR_INVALID_PARAMETER;
@@ -423,7 +427,7 @@ analysis_result_t scan_directory_for_files(const char* directory, const char** e
 	do 
 	{
 
-		//¹ıÂËµ±Ç°Ä¿Â¼ÓëÉÏÒ»¼¶Ä¿Â¼
+		//è¿‡æ»¤å½“å‰ç›®å½•ä¸ä¸Šä¸€çº§ç›®å½•
 		if (strcmp(find_data.cFileName,".")==0||strcmp(find_data.cFileName,"..")==0)
 		{
 

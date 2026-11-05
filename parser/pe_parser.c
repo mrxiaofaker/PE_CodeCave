@@ -7,23 +7,23 @@
 static bool parser_initalized = false;
 
 /*
-@brief ³õÊ¼»¯PEÎÄ¼ş½âÎöÆ÷
+@brief åˆå§‹åŒ–PEæ–‡ä»¶è§£æå™¨
 
-@return ³õÊ¼»¯½á¹û×´Ì¬Âë
+@return åˆå§‹åŒ–ç»“æœçŠ¶æ€ç 
 
 
 */
 
 
 analysis_result_t initialize_pe_parser(void) {
-	//¼ì²éÊÇ·ñÒÑ¾­³õÊ¼»¯
+	//æ£€æŸ¥æ˜¯å¦å·²ç»åˆå§‹åŒ–
 	if (parser_initalized)
 	{
 
 		return RESULT_SUCCESS;
 
 	}
-	//ÉèÖÃ³õÊ¼»¯±ê¼Ç
+	//è®¾ç½®åˆå§‹åŒ–æ ‡è®°
 
 	parser_initalized = true;
 
@@ -32,7 +32,7 @@ analysis_result_t initialize_pe_parser(void) {
 
 }
 /*
-@brief ÇåÀíPEÎÄ¼ş½âÎöÆ÷
+@brief æ¸…ç†PEæ–‡ä»¶è§£æå™¨
 
 
 
@@ -49,10 +49,10 @@ void clean_pe_parser(void)
 
 /*
 
-@brief  ½âÎöPEÎÄ¼ş,ÅĞ¶ÏÊÇ·ñÎªPE½á¹¹
-@param filename PEÎÄ¼şÂ·¾¶
-@param pe_info ÓÃÓÚ´æ´¢·ÖÎö½á¹¹µÄ±¨¸æ½á¹¹ÌåÖ¸Õë
-@return  ½âÎö½á¹û×´Ì¬Âë
+@brief  è§£æPEæ–‡ä»¶,åˆ¤æ–­æ˜¯å¦ä¸ºPEç»“æ„
+@param filename PEæ–‡ä»¶è·¯å¾„
+@param pe_info ç”¨äºå­˜å‚¨åˆ†æç»“æ„çš„æŠ¥å‘Šç»“æ„ä½“æŒ‡é’ˆ
+@return  è§£æç»“æœçŠ¶æ€ç 
 
 
 
@@ -63,7 +63,7 @@ void clean_pe_parser(void)
 analysis_result_t validate_pe_structure(const uint8_t* file_data, uint32_t file_size)
 {
 
-	//¼ì²é²ÎÊı
+	//æ£€æŸ¥å‚æ•°
 	if (!file_data||file_size<sizeof(IMAGE_DOS_HEADER))
 	{
 
@@ -72,10 +72,10 @@ analysis_result_t validate_pe_structure(const uint8_t* file_data, uint32_t file_
 	}
 
 
-	//»ñÈ¡DOSÍ·Ö¸Õë
+	//è·å–DOSå¤´æŒ‡é’ˆ
 	const IMAGE_DOS_HEADER* dos_header = (const IMAGE_DOS_HEADER*)file_data;
 
-	//¼ì²éDOSÇ©Ãû
+	//æ£€æŸ¥DOSç­¾å
 	if (dos_header->e_magic!=IMAGE_DOS_SIGNATURE)
 	{
 
@@ -84,26 +84,32 @@ analysis_result_t validate_pe_structure(const uint8_t* file_data, uint32_t file_
 	}
 
 
-	//ÑéÖ¤NTÍ·Æ«ÒÆÓĞĞ§ĞÔ
-	if (dos_header->e_lfanew>=file_size||dos_header->e_lfanew<sizeof(IMAGE_DOS_HEADER))
+	//éªŒè¯NTå¤´åç§»æœ‰æ•ˆæ€§
+	if (dos_header->e_lfanew < 0)
+	{
+		return RESULT_ERROR_INVALID_PE;
+	}
+	uint32_t nt_offset = (uint32_t)dos_header->e_lfanew;
+	if (nt_offset >= file_size || nt_offset < sizeof(IMAGE_DOS_HEADER))
 	{
 
 		return RESULT_ERROR_INVALID_PE;
 
 	}
 
-//NTÍ·ÊÇ·ñ³¬¹ıÎÄ¼ş´óĞ¡
-	if (dos_header->e_lfanew+sizeof(IMAGE_NT_HEADERS)>file_size)
+//NTå¤´æ˜¯å¦è¶…è¿‡æ–‡ä»¶å¤§å°
+	if (file_size < sizeof(IMAGE_NT_HEADERS)
+		|| nt_offset > file_size - sizeof(IMAGE_NT_HEADERS))
 	{
 
 		return RESULT_ERROR_INVALID_PE;
 
 	}
-	//»ñÈ¡NTÍ·Ö¸Õë
+	//è·å–NTå¤´æŒ‡é’ˆ
 	const IMAGE_NT_HEADERS* nt_header = (const IMAGE_NT_HEADERS*)(file_data + dos_header->e_lfanew);
 
 
-	//¼ì²éntÇ©Ãû
+	//æ£€æŸ¥ntç­¾å
 
 	if (nt_header->Signature!=IMAGE_NT_SIGNATURE)
 	{
@@ -121,10 +127,10 @@ analysis_result_t validate_pe_structure(const uint8_t* file_data, uint32_t file_
 }
 /*
 
-@brief  ½âÎöDosÊı¾İ
-@param  file_data   ÎÄ¼şÊı¾İÖ¸Õë
-@param dos_header   ÓÃÓÚ´æ´¢DosĞÅÏ¢½á¹¹ÌåÖ¸Õë
-@return  ½âÎö½á¹û×´Ì¬Âë
+@brief  è§£æDosæ•°æ®
+@param  file_data   æ–‡ä»¶æ•°æ®æŒ‡é’ˆ
+@param dos_header   ç”¨äºå­˜å‚¨Dosä¿¡æ¯ç»“æ„ä½“æŒ‡é’ˆ
+@return  è§£æç»“æœçŠ¶æ€ç 
 
 
 
@@ -134,7 +140,7 @@ analysis_result_t validate_pe_structure(const uint8_t* file_data, uint32_t file_
 
 analysis_result_t parse_dos_header(const uint8_t* file_data, IMAGE_DOS_HEADER* dos_header)
 {
-	//ÑéÖ¤²ÎÊıÓĞĞ§ĞÔ
+	//éªŒè¯å‚æ•°æœ‰æ•ˆæ€§
 	if (!file_data||!dos_header)
 	{
 		return RESULT_ERROR_INVALID_PARAMETER;
@@ -149,11 +155,11 @@ analysis_result_t parse_dos_header(const uint8_t* file_data, IMAGE_DOS_HEADER* d
 }
 /*
 
-@brief  ½âÎöNTÊı¾İ
-@param  file_data   ÎÄ¼şÊı¾İÖ¸Õë
-@param  nt_offset NTÍ·ÔÚÎÄ¼şÖĞµÄÆ«ÒÆÁ¿
-@param NT_header ÓÃÓÚ´æ´¢NTĞÅÏ¢½á¹¹ÌåÖ¸Õë
-@return  ½âÎö½á¹û×´Ì¬Âë
+@brief  è§£æNTæ•°æ®
+@param  file_data   æ–‡ä»¶æ•°æ®æŒ‡é’ˆ
+@param  nt_offset NTå¤´åœ¨æ–‡ä»¶ä¸­çš„åç§»é‡
+@param NT_header ç”¨äºå­˜å‚¨NTä¿¡æ¯ç»“æ„ä½“æŒ‡é’ˆ
+@return  è§£æç»“æœçŠ¶æ€ç 
 
 
 
@@ -163,7 +169,7 @@ analysis_result_t parse_dos_header(const uint8_t* file_data, IMAGE_DOS_HEADER* d
 	IMAGE_NT_HEADERS* nt_header)
 {
 
-	//ÑéÖ¤²ÎÊıÓĞĞ§ĞÔ
+	//éªŒè¯å‚æ•°æœ‰æ•ˆæ€§
 	if (!file_data || !nt_header)
 	{
 		return RESULT_ERROR_INVALID_PARAMETER;
@@ -176,14 +182,14 @@ analysis_result_t parse_dos_header(const uint8_t* file_data, IMAGE_DOS_HEADER* d
 
 /*
 
-@brief  ½âÎöNT½ÚÊı¾İ
-@param  file_data   ÎÄ¼şÊı¾İÖ¸Õë
-@param  file_size   ÎÄ¼ş´óĞ¡
-@param  nt_header_offset  NTÍ·²¿ÔÚÎÄ¼şÖĞµÄÆ«ÒÆÁ¿
-@param NT_header ÓÃÓÚ´æ´¢NTĞÅÏ¢½á¹¹ÌåÖ¸Õë
-@param sections   ÓÃÓÚ´æ´¢½ÚĞÅÏ¢Êı×éµÄÖ¸Õë
+@brief  è§£æNTèŠ‚æ•°æ®
+@param  file_data   æ–‡ä»¶æ•°æ®æŒ‡é’ˆ
+@param  file_size   æ–‡ä»¶å¤§å°
+@param  nt_header_offset  NTå¤´éƒ¨åœ¨æ–‡ä»¶ä¸­çš„åç§»é‡
+@param NT_header ç”¨äºå­˜å‚¨NTä¿¡æ¯ç»“æ„ä½“æŒ‡é’ˆ
+@param sections   ç”¨äºå­˜å‚¨èŠ‚ä¿¡æ¯æ•°ç»„çš„æŒ‡é’ˆ
 @param section_count  
-@return  ½âÎö½á¹û×´Ì¬Âë
+@return  è§£æç»“æœçŠ¶æ€ç 
 
 
 
@@ -197,12 +203,12 @@ analysis_result_t parse_section(const uint8_t* file_data, uint32_t file_size,
 	uint32_t nt_header_offset, const IMAGE_NT_HEADERS* nt_headers,
 	section_info_t** sections, uint16_t* section_count)
 {
-	//²ÎÊıĞ£Ñé
+	//å‚æ•°æ ¡éªŒ
 	if (!file_data||file_size==0||!nt_headers||!sections||!section_count)
 	{
 		return RESULT_ERROR_INVALID_PARAMETER;
 	}
-	//ÑéÖ¤NTÍ·²¿Æ«ÒÆÁ¿µÄÓĞĞ§ĞÔ
+	//éªŒè¯NTå¤´éƒ¨åç§»é‡çš„æœ‰æ•ˆæ€§
 	if (nt_header_offset>=file_size||nt_header_offset+sizeof(IMAGE_NT_HEADERS)>file_size)
 	{
 
@@ -213,7 +219,7 @@ analysis_result_t parse_section(const uint8_t* file_data, uint32_t file_size,
 
 	}
 
-	//ÑéÖ¤½ÚÇøÊıÁ¿Òì³£
+	//éªŒè¯èŠ‚åŒºæ•°é‡å¼‚å¸¸
 
 
 	*section_count = nt_headers->FileHeader.NumberOfSections;
@@ -221,7 +227,7 @@ analysis_result_t parse_section(const uint8_t* file_data, uint32_t file_size,
 	if (*section_count==0)
 	{
 		*section_count = 0;
-		printf("½ÚÇøÊıÁ¿Îª0");
+		printf("èŠ‚åŒºæ•°é‡ä¸º0");
 		return RESULT_ERROR_INVALID_PE;
 
 	}
@@ -233,7 +239,7 @@ analysis_result_t parse_section(const uint8_t* file_data, uint32_t file_size,
 
 
 
-	//ÉêÇëÄÚ´æ´æ´¢½ÚÇø½á¹¹ĞÅÏ¢
+	//ç”³è¯·å†…å­˜å­˜å‚¨èŠ‚åŒºç»“æ„ä¿¡æ¯
 	*sections = malloc(sizeof(section_info_t) * (*section_count));
 
 	if (!*sections)
@@ -242,11 +248,11 @@ analysis_result_t parse_section(const uint8_t* file_data, uint32_t file_size,
 
 		return RESULT_ERROR_MEMORY_ALLOCATION;
 	}
-	//¼ÆËã½ÚÇøÔÚÎÄ¼şÖĞµÄÎ»ÖÃ
+	//è®¡ç®—èŠ‚åŒºåœ¨æ–‡ä»¶ä¸­çš„ä½ç½®
 
 	size_t section_offset = nt_header_offset + sizeof(DWORD)
 		+ sizeof(IMAGE_FILE_HEADER) + nt_headers->FileHeader.SizeOfOptionalHeader;
-	//ÑéÖ¤½ÚÇøÎ»ÖÃÊÇ·ñÕı³£
+	//éªŒè¯èŠ‚åŒºä½ç½®æ˜¯å¦æ­£å¸¸
 
 	size_t section_size = sizeof(IMAGE_SECTION_HEADER) * (*section_count);
 	if (section_offset+section_size>file_size)
@@ -256,12 +262,12 @@ analysis_result_t parse_section(const uint8_t* file_data, uint32_t file_size,
 
 
 	}
-	//¶¨Î»½ÚÇø
+	//å®šä½èŠ‚åŒº
 
 	const IMAGE_SECTION_HEADER* section_headers = (const IMAGE_SECTION_HEADER*)(file_data + section_offset);
 
 
-	//±éÀú½ÚÇø
+	//éå†èŠ‚åŒº
 
 	for (size_t i=0;i<*section_count;i++)
 	{
@@ -283,11 +289,11 @@ analysis_result_t parse_section(const uint8_t* file_data, uint32_t file_size,
 		section->is_writable= (header->Characteristics & IMAGE_SCN_MEM_WRITE) != 0;
 		/*
 		
-		.text  ¶ÁÈ¡ + Ö´ĞĞ
-		.data  ¶ÁÈ¡ + Ğ´Èë
-		.rdata Ö»¶Á (Read-Only)
-		.rsec  ³ÌĞòµÄÍ¼±ê¡¢Î»Í¼¡¢²Ëµ¥¡¢¶Ô»°¿ò¡¢×Ö·û´®±í¡¢°æ±¾ĞÅÏ¢µÈ  Ö»¶Á (Read-Only)¡£
-		.reloc  ÊµÏÖµØÖ·¿Õ¼ä²¼¾ÖËæ»ú»¯£¨ASLR£©°²È«»úÖÆµÄ»ù´¡  Í¨³£ÎªÖ»¶Á£¬
+		.text  è¯»å– + æ‰§è¡Œ
+		.data  è¯»å– + å†™å…¥
+		.rdata åªè¯» (Read-Only)
+		.rsec  ç¨‹åºçš„å›¾æ ‡ã€ä½å›¾ã€èœå•ã€å¯¹è¯æ¡†ã€å­—ç¬¦ä¸²è¡¨ã€ç‰ˆæœ¬ä¿¡æ¯ç­‰  åªè¯» (Read-Only)ã€‚
+		.reloc  å®ç°åœ°å€ç©ºé—´å¸ƒå±€éšæœºåŒ–ï¼ˆASLRï¼‰å®‰å…¨æœºåˆ¶çš„åŸºç¡€  é€šå¸¸ä¸ºåªè¯»ï¼Œ
 		
 		
 		image_scn_mem_execute
@@ -333,14 +339,14 @@ analysis_result_t parse_section(const uint8_t* file_data, uint32_t file_size,
 
 /*
 
-@brief ¼ÆËãÊı¾İµÄĞÅÏ¢ìØ
-@param data Êı¾İÖ¸Õë
-@param size Êı¾İ´óĞ¡
-@return  ¼ÆËãµÃµ½µÄìØÖµ
+@brief è®¡ç®—æ•°æ®çš„ä¿¡æ¯ç†µ
+@param data æ•°æ®æŒ‡é’ˆ
+@param size æ•°æ®å¤§å°
+@return  è®¡ç®—å¾—åˆ°çš„ç†µå€¼
 
-µÍ(0.0)     Êı¾İÓĞĞò¿ÉÄÜÊÇÌî³äÊı¾İ|ÖØ¸´Êı¾İ|´¿ÎÄ±¾
-ÖĞ(4.0~6.0) Õı³£¿ÉÖ´ĞĞµÄ´úÂë,Í¨³£ÔÚÕâ¸ö·¶Î§ÄÚ
-¸ß(8.0)     Êı¾İËæ»ú - ¿ÉÄÜÊÇ¼ÓÃÜ|Ñ¹Ëõ|»ìÏı|´úÂë»òÊı¾İ
+ä½(0.0)     æ•°æ®æœ‰åºå¯èƒ½æ˜¯å¡«å……æ•°æ®|é‡å¤æ•°æ®|çº¯æ–‡æœ¬
+ä¸­(4.0~6.0) æ­£å¸¸å¯æ‰§è¡Œçš„ä»£ç ,é€šå¸¸åœ¨è¿™ä¸ªèŒƒå›´å†…
+é«˜(8.0)     æ•°æ®éšæœº - å¯èƒ½æ˜¯åŠ å¯†|å‹ç¼©|æ··æ·†|ä»£ç æˆ–æ•°æ®
 
 
 
@@ -348,13 +354,13 @@ analysis_result_t parse_section(const uint8_t* file_data, uint32_t file_size,
 
 double calcuate_entropy(const uint8_t* data, uint32_t size)
 {
-	//²ÎÊıÓĞĞ§¼ì²é
+	//å‚æ•°æœ‰æ•ˆæ£€æŸ¥
 	if (!data||size==0)
 	{
 		return 0;
 	}
 
-	//ÆµÂÊÍ³¼ÆÊı×é
+	//é¢‘ç‡ç»Ÿè®¡æ•°ç»„
 	uint32_t byte_counts[256] = { 0 };
 
 	__try {
@@ -380,7 +386,7 @@ double calcuate_entropy(const uint8_t* data, uint32_t size)
 
 	for (size_t i=0;i<256;i++)
 	{
-		//Ö»´¦ÀíÊµ¼Ê³öÏÖµÄ×Ö½ÚÊı
+		//åªå¤„ç†å®é™…å‡ºç°çš„å­—èŠ‚æ•°
 
 		if (byte_counts[i]>0)
 		{
@@ -403,8 +409,8 @@ double calcuate_entropy(const uint8_t* data, uint32_t size)
 }
 /*
 
-@brief ÊÍ·ÅÎÄ¼şÁĞ±íÄÚ´æ
-@param  file_list ÎÄ¼şÁĞ±í½á¹¹ÌåÖ¸Õë
+@brief é‡Šæ”¾æ–‡ä»¶åˆ—è¡¨å†…å­˜
+@param  file_list æ–‡ä»¶åˆ—è¡¨ç»“æ„ä½“æŒ‡é’ˆ
 
 
 
@@ -437,10 +443,10 @@ file_list->capacity = 0;
 
 /*
 
-@brief  ½âÎöPEÎÄ¼ş
-@param filename PEÎÄ¼şÂ·¾¶
-@param pe_info ÓÃÓÚ´æ´¢·ÖÎö½á¹¹µÄ±¨¸æ½á¹¹ÌåÖ¸Õë
-@return  ½âÎö½á¹û×´Ì¬Âë
+@brief  è§£æPEæ–‡ä»¶
+@param filename PEæ–‡ä»¶è·¯å¾„
+@param pe_info ç”¨äºå­˜å‚¨åˆ†æç»“æ„çš„æŠ¥å‘Šç»“æ„ä½“æŒ‡é’ˆ
+@return  è§£æç»“æœçŠ¶æ€ç 
 
 
 
@@ -451,24 +457,24 @@ file_list->capacity = 0;
 
 analysis_result_t parse_pe_file(const char* filename, pe_analysis_t* pe_info)
 {
-	//ÑéÖ¤²ÎÊıÓë³õÊ¼»¯×´Ì¬
+	//éªŒè¯å‚æ•°ä¸åˆå§‹åŒ–çŠ¶æ€
 	if (!parser_initalized||!filename||!pe_info)
 	{
 
 		return RESULT_ERROR_INVALID_PARAMETER;
 
 	}
-	//³õÊ¼»¯PEĞÅÏ¢½á¹¹Ìå
+	//åˆå§‹åŒ–PEä¿¡æ¯ç»“æ„ä½“
 	memset(pe_info, 0, sizeof(pe_analysis_t));
 
-	//¸´ÖÆÎÄ¼şÃû
+	//å¤åˆ¶æ–‡ä»¶å
 	strcpy(pe_info->filename, filename);
 
-	//¶¨ÒåÎÄ¼şÊı¾İ±äÁ¿
+	//å®šä¹‰æ–‡ä»¶æ•°æ®å˜é‡
 	uint8_t* filedata = NULL;
 	uint32_t filesize = 0;
 
-	//¶ÁÈ¡ÎÄ¼şµ½ÄÚ´æ
+	//è¯»å–æ–‡ä»¶åˆ°å†…å­˜
 	
 	analysis_result_t result = read_file_to_memory(filename, &filedata, &filesize);
 
@@ -478,11 +484,11 @@ analysis_result_t parse_pe_file(const char* filename, pe_analysis_t* pe_info)
 
 		return result;
 	}
-	//¼ÇÂ¼ÎÄ¼ş´óĞ¡
+	//è®°å½•æ–‡ä»¶å¤§å°
 	pe_info->file_size = filesize;
 
 
-	//ÑéÖ¤PEÎÄ¼ş½á¹¹
+	//éªŒè¯PEæ–‡ä»¶ç»“æ„
 
 	result=validate_pe_structure(filedata, filesize);
 	if (result!=RESULT_SUCCESS)
@@ -491,7 +497,7 @@ analysis_result_t parse_pe_file(const char* filename, pe_analysis_t* pe_info)
 		SAFE_FREE(filedata);
 		return result;
 	}
-	//½âÎöDOS
+	//è§£æDOS
 	result = parse_dos_header(filedata, &pe_info->dos_header);
 	if (result != RESULT_SUCCESS)
 	{
@@ -500,7 +506,7 @@ analysis_result_t parse_pe_file(const char* filename, pe_analysis_t* pe_info)
 		return result;
 	}
 
-	//½âÎöNT
+	//è§£æNT
 	result = parse_nt_header(filedata, pe_info->dos_header.e_lfanew,&pe_info->nt_header);
 	if (result != RESULT_SUCCESS)
 	{
@@ -508,13 +514,13 @@ analysis_result_t parse_pe_file(const char* filename, pe_analysis_t* pe_info)
 		SAFE_FREE(filedata);
 		return result;
 	}
-	//ÌáÈ¡Èë¿ÚµãÓë³ÌĞò»ùÖ·
+	//æå–å…¥å£ç‚¹ä¸ç¨‹åºåŸºå€
 	pe_info->entry_point = pe_info->nt_header.OptionalHeader.AddressOfEntryPoint;
 	pe_info->image_base = pe_info->nt_header.OptionalHeader.ImageBase;
 
 
 
-	//½âÎö½ÚÇø
+	//è§£æèŠ‚åŒº
 
 	result=parse_section(filedata, filesize, pe_info->dos_header.e_lfanew, &pe_info->nt_header, &pe_info->section, &pe_info->section_count);
 
@@ -524,10 +530,10 @@ analysis_result_t parse_pe_file(const char* filename, pe_analysis_t* pe_info)
 
 		return result;
 	}
-	//ÎÄ¼şìØÖµ
+	//æ–‡ä»¶ç†µå€¼
 	pe_info->overall_entropy = calcuate_entropy(filedata, filesize);
 
-	//ÊÍ·ÅÄÚ´æ
+	//é‡Šæ”¾å†…å­˜
 	SAFE_FREE(filedata);
 
 

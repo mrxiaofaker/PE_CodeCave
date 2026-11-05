@@ -13,7 +13,9 @@ $manifestPath = (Resolve-Path -LiteralPath $Manifest).Path
 $executablePath = (Resolve-Path -LiteralPath $Executable).Path
 $outputPath = [System.IO.Path]::GetFullPath($OutputDirectory)
 $logDirectory = Join-Path $outputPath 'logs'
+$reportDirectory = Join-Path $outputPath 'reports'
 $null = [System.IO.Directory]::CreateDirectory($logDirectory)
+$null = [System.IO.Directory]::CreateDirectory($reportDirectory)
 
 $rows = @(Import-Csv -LiteralPath $manifestPath)
 if ($Limit -gt 0) {
@@ -54,51 +56,14 @@ foreach ($row in $rows) {
         }
         else {
             $startedAt = [System.Diagnostics.Stopwatch]::StartNew()
-            $processInfo = New-Object System.Diagnostics.ProcessStartInfo
-            $processInfo.FileName = $executablePath
-            $processInfo.WorkingDirectory = Split-Path -Parent $executablePath
-            $processInfo.UseShellExecute = $false
-            $processInfo.CreateNoWindow = $true
-            $processInfo.RedirectStandardInput = $true
-            $processInfo.RedirectStandardOutput = $true
-            $processInfo.RedirectStandardError = $true
-
-            $inputEncodingProperty = $processInfo.PSObject.Properties['StandardInputEncoding']
-            if ($inputEncodingProperty) {
-                $processInfo.StandardInputEncoding = [System.Text.Encoding]::GetEncoding(936)
-            }
-            $outputEncodingProperty = $processInfo.PSObject.Properties['StandardOutputEncoding']
-            if ($outputEncodingProperty) {
-                $processInfo.StandardOutputEncoding = [System.Text.Encoding]::GetEncoding(936)
-            }
-            $errorEncodingProperty = $processInfo.PSObject.Properties['StandardErrorEncoding']
-            if ($errorEncodingProperty) {
-                $processInfo.StandardErrorEncoding = [System.Text.Encoding]::GetEncoding(936)
-            }
-
-            $process = New-Object System.Diagnostics.Process
-            $process.StartInfo = $processInfo
-            $null = $process.Start()
-
-            $stdoutTask = $process.StandardOutput.ReadToEndAsync()
-            $stderrTask = $process.StandardError.ReadToEndAsync()
-            $scriptInput = "1`r`n$targetPath`r`n5`r`ny`r`n"
-            $process.StandardInput.Write($scriptInput)
-            $process.StandardInput.Close()
-
-            $completed = $process.WaitForExit(120000)
-            if (-not $completed) {
-                $process.Kill()
-                $status = 'Timeout'
-                $errorText = 'Analysis exceeded 120 seconds.'
-            }
-
-            $stdout = $stdoutTask.Result
-            $stderr = $stderrTask.Result
-            $exitCode = $process.ExitCode
+            $processOutput = & $executablePath `
+                --path $targetPath `
+                --json `
+                --out $reportDirectory `
+                --quiet 2>&1 | Out-String
+            $exitCode = $LASTEXITCODE
             $startedAt.Stop()
             $durationMs = $startedAt.ElapsedMilliseconds
-            $process.Dispose()
 
             if (-not $status) {
                 if ($exitCode -eq 0) {
@@ -118,8 +83,7 @@ foreach ($row in $rows) {
                 "status: $status`r`n" +
                 "exit_code: $exitCode`r`n" +
                 "duration_ms: $durationMs`r`n`r`n" +
-                "--- STDOUT ---`r`n$stdout`r`n" +
-                "--- STDERR ---`r`n$stderr`r`n"
+                "--- PROCESS OUTPUT ---`r`n$processOutput`r`n"
             [System.IO.File]::WriteAllText($logPath, $logText, [System.Text.Encoding]::UTF8)
         }
     }

@@ -26,17 +26,17 @@ const char* get_cave_type_string(uint8_t type) {
 
 
 /*
-@brief  ´òÓ¡·ÖÎö±¨¸æÕªÒªÄÚÈÝ
-@ param report ·ÖÎö±¨¸æ½á¹¹ÌåÖ¸Õë
+@brief  æ‰“å°åˆ†æžæŠ¥å‘Šæ‘˜è¦å†…å®¹
+@ param report åˆ†æžæŠ¥å‘Šç»“æž„ä½“æŒ‡é’ˆ
 */
 
 
 void print_report_summary(const analysis_report_t* report) {
 	printf("\r\n");
-	log_message(LOG_LEVEL_INFO, "Ä¿±êÎÄ¼þ %s", report->target_file);
-	log_message(LOG_LEVEL_INFO, "ÎÄ¼þ´óÐ¡ %d",report->pe_info.file_size );
-	log_message(LOG_LEVEL_INFO, "¶´Ñ¨ÊýÁ¿ %d",report->total_cave_found );
-	log_message(LOG_LEVEL_INFO, "Òì³£ÊýÁ¿ %d",report->anomalies_detected );
+	log_message(LOG_LEVEL_INFO, "ç›®æ ‡æ–‡ä»¶ %s", report->target_file);
+	log_message(LOG_LEVEL_INFO, "æ–‡ä»¶å¤§å° %d",report->pe_info.file_size );
+	log_message(LOG_LEVEL_INFO, "æ´žç©´æ•°é‡ %d",report->total_cave_found );
+	log_message(LOG_LEVEL_INFO, "å¼‚å¸¸æ•°é‡ %d",report->anomalies_detected );
 											 
 
 
@@ -44,18 +44,18 @@ void print_report_summary(const analysis_report_t* report) {
 }
 
 /*
-@brief  ´òÓ¡pe½á¹¹ÐÅÏ¢
-@ param report ·ÖÎö±¨¸æ½á¹¹ÌåÖ¸Õë
+@brief  æ‰“å°peç»“æž„ä¿¡æ¯
+@ param report åˆ†æžæŠ¥å‘Šç»“æž„ä½“æŒ‡é’ˆ
 */
 void print_pe_struct_info(const analysis_report_t* report) {
 
 	printf("\r\n");
 
-	log_message(LOG_LEVEL_INFO, "PE½á¹¹ÐÅÏ¢");
-	log_message(LOG_LEVEL_INFO, "Èë¿Úµã 0x%08x",report->pe_info.entry_point);
-	log_message(LOG_LEVEL_INFO, "Ó³Éä»ùÖ· 0x%llx",(unsigned long long)report->pe_info.image_base);
-	log_message(LOG_LEVEL_INFO, "½ÚÇøÊýÁ¿ 0x%08x",report->pe_info.section_count);
-	log_message(LOG_LEVEL_INFO, "ÎÄ¼þìØÖµ 0x%08x",report->pe_info.overall_entropy);
+	log_message(LOG_LEVEL_INFO, "PEç»“æž„ä¿¡æ¯");
+	log_message(LOG_LEVEL_INFO, "å…¥å£ç‚¹ 0x%08x",report->pe_info.entry_point);
+	log_message(LOG_LEVEL_INFO, "æ˜ å°„åŸºå€ 0x%llx",(unsigned long long)report->pe_info.image_base);
+	log_message(LOG_LEVEL_INFO, "èŠ‚åŒºæ•°é‡ 0x%08x",report->pe_info.section_count);
+	log_message(LOG_LEVEL_INFO, "æ–‡ä»¶ç†µå€¼ 0x%08x",report->pe_info.overall_entropy);
 	
 	if (report->pe_info.section)
 	{
@@ -86,11 +86,11 @@ void print_pe_struct_info(const analysis_report_t* report) {
 }
 /*
 
-@brief  ´òÓ¡´úÂë¶´Ñ¨µÄÏêÏ¸ÐÅÏ¢
-@param caves  ´úÂë¶´Ñ¨µÄÊý×éÖ¸Õë
-@param cave_count ´úÂë¶´Ñ¨ÊýÁ¿
-@param verbose ÊÇ·ñÊä³öÏêÏ¸ÐÅÏ¢
-@return  ·ÖÎö½á¹û×´Ì¬Âë
+@brief  æ‰“å°ä»£ç æ´žç©´çš„è¯¦ç»†ä¿¡æ¯
+@param caves  ä»£ç æ´žç©´çš„æ•°ç»„æŒ‡é’ˆ
+@param cave_count ä»£ç æ´žç©´æ•°é‡
+@param verbose æ˜¯å¦è¾“å‡ºè¯¦ç»†ä¿¡æ¯
+@return  åˆ†æžç»“æžœçŠ¶æ€ç 
 
 
 
@@ -121,11 +121,11 @@ void print_caves_info(const code_cave_t* caves,uint32_t cave_count,bool verbose)
 }
 /*
 
-@brief  ´òÓ¡Òì³£Ä£Ê½µÄÏêÏ¸ÐÅÏ¢
-@param anomalies Òì³£Ä£Ê½Êý×éÖ¸Õë
-@param anomaly_count Òì³£Ä£Ê½ÊýÁ¿
-@param verbose ÊÇ·ñÊä³öÏêÏ¸ÐÅÏ¢
-@return  ·ÖÎö½á¹û×´Ì¬Âë
+@brief  æ‰“å°å¼‚å¸¸æ¨¡å¼çš„è¯¦ç»†ä¿¡æ¯
+@param anomalies å¼‚å¸¸æ¨¡å¼æ•°ç»„æŒ‡é’ˆ
+@param anomaly_count å¼‚å¸¸æ¨¡å¼æ•°é‡
+@param verbose æ˜¯å¦è¾“å‡ºè¯¦ç»†ä¿¡æ¯
+@return  åˆ†æžç»“æžœçŠ¶æ€ç 
 
 
 
@@ -158,10 +158,10 @@ void print_anomaly_pattern_info(const anomaly_pattern_t*anomalies,uint32_t anoma
 
 /*
 
-@brief  Éú³É¿ØÖÆÌ¨¸ñÊ½µÄ·ÖÎö±¨¸æ
-@param report ·ÖÎö±¨¸æ½á¹¹ÌåÖ¸Õë
-@param verbose ÊÇ·ñÊä³öÏêÏ¸ÐÅÏ¢
-@return  ·ÖÎö½á¹û×´Ì¬Âë
+@brief  ç”ŸæˆæŽ§åˆ¶å°æ ¼å¼çš„åˆ†æžæŠ¥å‘Š
+@param report åˆ†æžæŠ¥å‘Šç»“æž„ä½“æŒ‡é’ˆ
+@param verbose æ˜¯å¦è¾“å‡ºè¯¦ç»†ä¿¡æ¯
+@return  åˆ†æžç»“æžœçŠ¶æ€ç 
 
 
 
@@ -171,26 +171,26 @@ void print_anomaly_pattern_info(const anomaly_pattern_t*anomalies,uint32_t anoma
 analysis_result_t generate_console_report(const analysis_report_t* report, bool verbose)
 {
 	
-	//²ÎÊýÑéÖ¤
+	//å‚æ•°éªŒè¯
 	if (!report)
 	{
 		return RESULT_ERROR_INVALID_PARAMETER;
 	}
 
-	//Êä³öÐÅÏ¢
+	//è¾“å‡ºä¿¡æ¯
 	printf("/r/n");
 	log_message(LOG_LEVEL_INFO, "==========================================================================");
-	log_message(LOG_LEVEL_INFO, "=====================´úÂë¶´Ñ¨¼ì²â·ÖÎö=====================================");
+	log_message(LOG_LEVEL_INFO, "=====================ä»£ç æ´žç©´æ£€æµ‹åˆ†æž=====================================");
 	log_message(LOG_LEVEL_INFO, "==========================================================================");
-	//±¨¸æÕªÒª
+	//æŠ¥å‘Šæ‘˜è¦
 	print_report_summary(report);
-	//ÏêÏ¸ÐÅÏ¢
+	//è¯¦ç»†ä¿¡æ¯
 	if (verbose)
 	{
 		print_pe_struct_info(report);
 	}
 
-	//¶´Ñ¨ÐÅÏ¢
+	//æ´žç©´ä¿¡æ¯
 	if (report->total_cave_found>0)
 	{
 
@@ -200,7 +200,7 @@ analysis_result_t generate_console_report(const analysis_report_t* report, bool 
 
 
 
-	//Òì³£ÐÅÏ¢
+	//å¼‚å¸¸ä¿¡æ¯
 	if (report->anomalies_detected>0)
 	{
 
